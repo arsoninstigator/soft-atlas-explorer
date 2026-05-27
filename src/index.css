@@ -326,5 +326,11 @@ html.theme-sage .leaflet-tile-pane {
   to   { transform: translate3d(0,-14px,0); opacity: 1; }
 }
 
+/* timeline reel — each digit rolls in like a rotary dial laid on its side */
+@keyframes wd-reel-roll {
+  from { transform: translateY(-30%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
 /* font-serif utility (Tailwind's serif is generic; we want Instrument Serif) */
 .font-serif { font-family: var(--font-serif); }
