@@ -1,5 +1,5 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -49,8 +49,9 @@
     --sidebar-border: 340 12% 82%;
     --sidebar-ring: 351 38% 65%;
 
-    --font-sans: 'Work Sans', sans-serif;
-    --font-mono: 'Fira Code', monospace;
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
 
     --shadow-x: 0px;
     --shadow-y: 1px;
@@ -174,17 +175,28 @@ html.theme-sage {
   backdrop-filter: blur(6px) saturate(0.65) !important;
 }
 
-/* ── map tile tinting ──
- *
+/* ── wandery map tile tinting ──
  * Base: CartoDB Voyager nolabels (warm beige land ~35°, parks ~90°, water ~200°)
- *
- * default (cherry & thistle)  hue+298° → land=333° dusty-rose, parks=28° amber
- * theme-pink (peachy seashell) hue+302° → land=337° rose-pink, parks=32° peach
- * theme-sage                   natural warm — no hue shift, gentle muting
+ * Wandery push: rotate land toward dusty-rose, mute everything, soften contrast,
+ * dust the whole pane in a faint cream so it reads as a museum atlas, not a satellite tool.
  */
+.wd-map .leaflet-tile-pane {
+  filter: hue-rotate(298deg) saturate(0.85) brightness(1.06) contrast(0.82);
+}
+.wd-map::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 50%, rgba(255,245,238,0) 60%, rgba(120,90,110,0.10) 100%),
+    linear-gradient(180deg, rgba(247,225,215,0.06), rgba(222,200,232,0.06));
+  mix-blend-mode: multiply;
+  z-index: 400;
+}
 
-.leaflet-tile-pane {
-  filter: hue-rotate(298deg) saturate(1.6) brightness(0.98) contrast(0.90);
+/* legacy fabnet selector left for safety on any leftover surfaces */
+.leaflet-tile-pane:not(.wd-map .leaflet-tile-pane) {
+  filter: hue-rotate(298deg) saturate(1.0) brightness(1.02) contrast(0.88);
 }
 
 html.theme-pink .leaflet-tile-pane {
@@ -255,3 +267,64 @@ html.theme-sage .leaflet-tile-pane {
   background: transparent !important;
   box-shadow: none !important;
 }
+
+/* ── wandery hover tooltip for country borders ── */
+.wd-hover-tooltip {
+  background: hsl(var(--card) / 0.85) !important;
+  border: 1px solid hsl(var(--border) / 0.7) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 18px rgba(80, 60, 80, 0.10) !important;
+  padding: 4px 10px !important;
+  backdrop-filter: blur(10px);
+  pointer-events: none !important;
+  font-family: var(--font-mono);
+  font-size: 10px !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground)) !important;
+}
+.wd-hover-tooltip::before { display: none !important; }
+.wd-tt-name { color: hsl(var(--foreground)); }
+
+/* ── timeline range slider ── */
+.wd-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: hsl(var(--border));
+  border-radius: 999px;
+  outline: none;
+}
+.wd-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 999px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 4px rgba(80, 60, 80, 0.18), 0 0 0 4px hsl(var(--accent) / 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.wd-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.wd-range::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 999px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 4px rgba(80, 60, 80, 0.18), 0 0 0 4px hsl(var(--accent) / 0.25);
+  cursor: pointer;
+}
+
+/* hide scrollbar on chip strip */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* drifting chip animation for landing page */
+@keyframes wd-drift {
+  from { transform: translate3d(0,0,0); opacity: 0.7; }
+  to   { transform: translate3d(0,-14px,0); opacity: 1; }
+}
+
+/* font-serif utility (Tailwind's serif is generic; we want Instrument Serif) */
+.font-serif { font-family: var(--font-serif); }
