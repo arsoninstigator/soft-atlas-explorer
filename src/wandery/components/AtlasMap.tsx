@@ -3,7 +3,19 @@ import { ensureLeaflet, loadCountries } from "@/wandery/lib/leaflet";
 import { FILTERS, type FilterId } from "@/wandery/data/filters";
 
 const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
-const TILE_LABELS = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png";
+
+// rough centroid from a GeoJSON feature (avg of outer-ring coords)
+function featureCentroid(feat: any): [number, number] | null {
+  const g = feat?.geometry; if (!g) return null;
+  const polys = g.type === "Polygon" ? [g.coordinates] : g.type === "MultiPolygon" ? g.coordinates : null;
+  if (!polys) return null;
+  let best: any[] = []; let bestLen = 0;
+  polys.forEach((p: any) => { const ring = p[0] || []; if (ring.length > bestLen) { bestLen = ring.length; best = ring; } });
+  if (!best.length) return null;
+  let x = 0, y = 0;
+  best.forEach(([lng, lat]: number[]) => { x += lng; y += lat; });
+  return [y / best.length, x / best.length];
+}
 
 export interface ToggleState {
   labels: boolean;
@@ -56,10 +68,25 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, o
   }, [center[0], center[1], zoom]);
 
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!ready || !mapRef.current || !countriesRef.current) return;
     const L = (window as any).L;
     if (toggles.labels && !labelsLayer.current) {
-      labelsLayer.current = L.tileLayer(TILE_LABELS, { maxZoom: 10, opacity: 0.55 }).addTo(mapRef.current);
+      const group = L.layerGroup();
+      countriesRef.current.features.forEach((feat: any) => {
+        const c = featureCentroid(feat);
+        const name = feat.properties?.name;
+        if (!c || !name) return;
+        L.marker(c, {
+          interactive: false,
+          icon: L.divIcon({
+            className: "wd-country-label",
+            html: `<span>${name}</span>`,
+            iconSize: [0, 0],
+          }),
+        }).addTo(group);
+      });
+      group.addTo(mapRef.current);
+      labelsLayer.current = group;
     } else if (!toggles.labels && labelsLayer.current) {
       labelsLayer.current.remove();
       labelsLayer.current = null;

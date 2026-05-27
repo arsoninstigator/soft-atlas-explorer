@@ -15,7 +15,7 @@ export default function Atlas({ region }: Props) {
   const config = REGIONS[region] ?? REGIONS.world;
   const available = filtersFor(region);
   const [active, setActive] = useState<FilterId[]>([]);
-  const [toggles, setToggles] = useState<ToggleState>({ labels: false, borders: true, terrain: false, pins: false });
+  const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
 
