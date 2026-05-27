@@ -24,10 +24,14 @@ const App = () => (
           <Route path="/world" element={<Atlas region="world" />} />
           <Route path="/europe" element={<Atlas region="europe" />} />
           <Route path="/america" element={<Atlas region="america" />} />
-          <Route path="/canada" element={<Atlas region="canada" />} />
+          <Route path="/northamerica" element={<Atlas region="northamerica" />} />
+          <Route path="/southamerica" element={<Atlas region="southamerica" />} />
+          <Route path="/mena" element={<Atlas region="mena" />} />
           <Route path="/asia" element={<Atlas region="asia" />} />
           <Route path="/africa" element={<Atlas region="africa" />} />
           <Route path="/oceania" element={<Atlas region="oceania" />} />
+          <Route path="/country/canada" element={<Atlas region="canada" />} />
+          <Route path="/country/unitedstates" element={<Atlas region="unitedstates" />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />

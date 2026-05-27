@@ -83,8 +83,11 @@ export function filtersFor(region: string): FilterId[] {
   if (region === "africa") return ["arabworld","francophone","commonwealth","mediterranean","globalsouth","islandnations","landlocked"];
   if (region === "asia") return ["postsoviet","arabworld","brics","g20","islandnations","commonwealth","landlocked"];
   if (region === "america") return ["nato","anglosphere","democracies","g20","brics","globalsouth","islandnations","commonwealth"];
-  if (region === "canada") return ["nato","anglosphere","commonwealth","g20","francophone","democracies"];
+  if (region === "northamerica") return ["nato","anglosphere","democracies","g20","commonwealth","francophone"];
+  if (region === "southamerica") return ["g20","brics","globalsouth","democracies","mediterranean"];
+  if (region === "mena") return ["arabworld","mediterranean","francophone","g20","globalsouth"];
   if (region === "oceania") return ["anglosphere","commonwealth","democracies","islandnations","francophone"];
+  if (region === "canada" || region === "unitedstates") return [];
   return WORLD_FILTERS;
 }
 
