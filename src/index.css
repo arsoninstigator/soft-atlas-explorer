@@ -304,6 +304,24 @@ html.theme-sage .leaflet-tile-pane {
   white-space: nowrap;
 }
 
+/* large continent labels (used on /world) */
+.wd-continent-label {
+  pointer-events: none;
+  background: transparent !important;
+  border: none !important;
+}
+.wd-continent-label span {
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground) / 0.42);
+  text-shadow: 0 0 8px hsl(var(--background)), 0 0 16px hsl(var(--background));
+  white-space: nowrap;
+}
+
 /* ── timeline range slider ── */
 .wd-range {
   -webkit-appearance: none;

@@ -36,6 +36,8 @@ export default function Atlas({ region }: Props) {
         activeFilters={active}
         toggles={toggles}
         year={year}
+        labelMode={config.labelMode ?? "countries"}
+        subdivisionsUrl={config.subdivisionsUrl}
         onCountry={(iso, name) => setPicked({ iso, name })}
       />
 

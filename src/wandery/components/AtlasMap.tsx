@@ -4,6 +4,17 @@ import { FILTERS, type FilterId } from "@/wandery/data/filters";
 
 const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
 
+// hardcoded continent label anchors for the /world view
+const CONTINENTS: { name: string; pos: [number, number] }[] = [
+  { name: "NORTH AMERICA", pos: [46, -100] },
+  { name: "SOUTH AMERICA", pos: [-15, -60] },
+  { name: "EUROPE",        pos: [54, 18] },
+  { name: "AFRICA",         pos: [3, 22] },
+  { name: "ASIA",           pos: [46, 95] },
+  { name: "OCEANIA",        pos: [-25, 140] },
+  { name: "ANTARCTICA",     pos: [-78, 0] },
+];
+
 // rough centroid from a GeoJSON feature (avg of outer-ring coords)
 function featureCentroid(feat: any): [number, number] | null {
   const g = feat?.geometry; if (!g) return null;
@@ -30,17 +41,22 @@ interface Props {
   activeFilters: FilterId[];
   toggles: ToggleState;
   year: number;
+  labelMode?: "continents" | "countries" | "subdivisions";
+  subdivisionsUrl?: string;
   onCountry: (iso: string, name: string) => void;
 }
 
-export default function AtlasMap({ center, zoom, activeFilters, toggles, year, onCountry }: Props) {
+export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, onCountry }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const labelsLayer = useRef<any>(null);
   const bordersLayer = useRef<any>(null);
   const overlayLayers = useRef<any[]>([]);
   const countriesRef = useRef<any>(null);
+  const subdivisionsRef = useRef<any>(null);
+  const subdivisionsLayer = useRef<any>(null);
   const [ready, setReady] = useState(false);
+  const [subKey, setSubKey] = useState(0);
   const handlersRef = useRef({ onCountry });
   useEffect(() => { handlersRef.current = { onCountry }; });
 
@@ -67,31 +83,65 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, o
     if (mapRef.current) mapRef.current.flyTo(center, zoom, { duration: 1.6, easeLinearity: 0.25 });
   }, [center[0], center[1], zoom]);
 
+  // fetch subdivisions when url changes
+  useEffect(() => {
+    subdivisionsRef.current = null;
+    setSubKey(k => k + 1);
+    if (!subdivisionsUrl) return;
+    let cancel = false;
+    fetch(subdivisionsUrl).then(r => r.json()).then(j => {
+      if (cancel) return;
+      subdivisionsRef.current = j;
+      setSubKey(k => k + 1);
+    }).catch(() => {});
+    return () => { cancel = true; };
+  }, [subdivisionsUrl]);
+
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
     const L = (window as any).L;
-    if (toggles.labels && !labelsLayer.current) {
-      const group = L.layerGroup();
+    // tear down previous label layer; rebuild from scratch each time the mode changes
+    if (labelsLayer.current) { labelsLayer.current.remove(); labelsLayer.current = null; }
+    if (!toggles.labels) return;
+
+    const group = L.layerGroup();
+
+    if (labelMode === "continents") {
+      CONTINENTS.forEach(({ name, pos }) => {
+        L.marker(pos, {
+          interactive: false,
+          icon: L.divIcon({
+            className: "wd-continent-label",
+            html: `<span>${name}</span>`,
+            iconSize: [0, 0],
+          }),
+        }).addTo(group);
+      });
+    } else if (labelMode === "subdivisions" && subdivisionsRef.current) {
+      subdivisionsRef.current.features.forEach((feat: any) => {
+        const c = featureCentroid(feat);
+        const name = feat.properties?.name || feat.properties?.NAME;
+        if (!c || !name) return;
+        L.marker(c, {
+          interactive: false,
+          icon: L.divIcon({ className: "wd-country-label", html: `<span>${name}</span>`, iconSize: [0, 0] }),
+        }).addTo(group);
+      });
+    } else {
       countriesRef.current.features.forEach((feat: any) => {
         const c = featureCentroid(feat);
         const name = feat.properties?.name;
         if (!c || !name) return;
         L.marker(c, {
           interactive: false,
-          icon: L.divIcon({
-            className: "wd-country-label",
-            html: `<span>${name}</span>`,
-            iconSize: [0, 0],
-          }),
+          icon: L.divIcon({ className: "wd-country-label", html: `<span>${name}</span>`, iconSize: [0, 0] }),
         }).addTo(group);
       });
-      group.addTo(mapRef.current);
-      labelsLayer.current = group;
-    } else if (!toggles.labels && labelsLayer.current) {
-      labelsLayer.current.remove();
-      labelsLayer.current = null;
     }
-  }, [toggles.labels, ready]);
+
+    group.addTo(mapRef.current);
+    labelsLayer.current = group;
+  }, [toggles.labels, ready, labelMode, subKey]);
 
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
@@ -102,6 +152,8 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, o
     overlayLayers.current = [];
     bordersLayer.current?.remove();
     bordersLayer.current = null;
+    subdivisionsLayer.current?.remove();
+    subdivisionsLayer.current = null;
 
     const ageFade = Math.max(0, Math.min(1, (year - 1800) / (2025 - 1800)));
     const borderOpacity = toggles.borders ? 0.18 + 0.08 * ageFade : 0.04;
@@ -127,6 +179,27 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, o
     bordersLayer.current = base;
     overlayLayers.current.push(base);
 
+    if (subdivisionsRef.current) {
+      const sub = L.geoJSON(subdivisionsRef.current, {
+        style: () => ({
+          color: "rgba(80,60,70,1)", weight: 0.8, opacity: 0.45,
+          fillColor: "#ffffff", fillOpacity: 0,
+        }),
+        onEachFeature: (feat: any, layer: any) => {
+          const name = feat.properties?.name || feat.properties?.NAME || "";
+          layer.on({
+            mouseover: () => layer.setStyle({ weight: 1.4, opacity: 0.75, fillColor: "#f4ead8", fillOpacity: 0.22 }),
+            mouseout: () => layer.setStyle({ weight: 0.8, opacity: 0.45, fillColor: "#ffffff", fillOpacity: 0 }),
+          });
+          if (name) layer.bindTooltip(`<span class="wd-tt-name">${name}</span>`, {
+            direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1,
+          });
+        },
+      }).addTo(map);
+      subdivisionsLayer.current = sub;
+      overlayLayers.current.push(sub);
+    }
+
     activeFilters.forEach((fid, idx) => {
       const def = FILTERS[fid];
       if (!def) return;
@@ -151,7 +224,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, o
       }).addTo(map);
       overlayLayers.current.push(halo);
     });
-  }, [ready, activeFilters.join("|"), toggles.borders, year]);
+  }, [ready, activeFilters.join("|"), toggles.borders, year, subKey]);
 
   return <div ref={ref} className="absolute inset-0 wd-map" />;
 }
