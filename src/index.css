@@ -286,6 +286,24 @@ html.theme-sage .leaflet-tile-pane {
 .wd-hover-tooltip::before { display: none !important; }
 .wd-tt-name { color: hsl(var(--foreground)); }
 
+/* wandery country labels (rendered from GeoJSON, always english) */
+.wd-country-label {
+  pointer-events: none;
+  background: transparent !important;
+  border: none !important;
+}
+.wd-country-label span {
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground) / 0.62);
+  text-shadow: 0 0 4px hsl(var(--background)), 0 0 8px hsl(var(--background));
+  white-space: nowrap;
+}
+
 /* ── timeline range slider ── */
 .wd-range {
   -webkit-appearance: none;
