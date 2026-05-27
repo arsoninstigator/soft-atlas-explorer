@@ -200,7 +200,7 @@ html.theme-sage {
 }
 
 html.theme-pink .leaflet-tile-pane {
-  filter: saturate(0.95) brightness(1.04) contrast(0.95) !important;
+  filter: hue-rotate(312deg) saturate(1.35) brightness(1.05) contrast(0.92) sepia(0.18) !important;
 }
 
 html.theme-sage .leaflet-tile-pane {
