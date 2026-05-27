@@ -15,7 +15,7 @@ export default function Atlas({ region }: Props) {
   const config = REGIONS[region] ?? REGIONS.world;
   const available = filtersFor(region);
   const [active, setActive] = useState<FilterId[]>([]);
-  const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
+  const [toggles, setToggles] = useState<ToggleState>({ labels: false, borders: true, terrain: false, pins: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
 
@@ -63,14 +63,6 @@ export default function Atlas({ region }: Props) {
           {config.blurb}
         </div>
       </div>
-
-      {/* top-right secondary nav */}
-      <nav className="absolute top-5 right-5 z-[30] pointer-events-auto flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-        <Link to="/about" className="hover:text-foreground transition-colors">about</Link>
-        <Link to="/philosophy" className="hover:text-foreground transition-colors">philosophy</Link>
-        <Link to="/features" className="hover:text-foreground transition-colors">features</Link>
-        <Link to="/roadmap" className="hover:text-foreground transition-colors">roadmap</Link>
-      </nav>
 
       {/* right side: map controls */}
       <div className="absolute right-5 top-1/2 -translate-y-1/2 z-[30]">
