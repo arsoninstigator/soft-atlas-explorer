@@ -56,6 +56,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
   const subdivisionsRef = useRef<any>(null);
   const subdivisionsLayer = useRef<any>(null);
   const [ready, setReady] = useState(false);
+  const [subKey, setSubKey] = useState(0);
   const handlersRef = useRef({ onCountry });
   useEffect(() => { handlersRef.current = { onCountry }; });
 
@@ -85,19 +86,16 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
   // fetch subdivisions when url changes
   useEffect(() => {
     subdivisionsRef.current = null;
+    setSubKey(k => k + 1);
     if (!subdivisionsUrl) return;
     let cancel = false;
     fetch(subdivisionsUrl).then(r => r.json()).then(j => {
       if (cancel) return;
       subdivisionsRef.current = j;
-      // force a re-render of label/border layers
-      setReady(r => r); // no-op state nudge
-      // manually trigger by toggling a state value
       setSubKey(k => k + 1);
     }).catch(() => {});
     return () => { cancel = true; };
   }, [subdivisionsUrl]);
-  const [subKey, setSubKey] = useState(0);
 
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
