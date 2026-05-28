@@ -89,3 +89,43 @@ export function religionsFor(iso: string): { secular: boolean; tags: string[] } 
 export function languagesFor(iso: string): string[] {
   return LANG[iso] ?? [];
 }
+
+/* ── reverse indexes for tag exploration ── */
+
+function buildIndex(src: Record<string, string[]>): Record<string, string[]> {
+  const idx: Record<string, string[]> = {};
+  Object.entries(src).forEach(([iso, tags]) => {
+    tags.forEach(t => { (idx[t] ||= []).push(iso); });
+  });
+  return idx;
+}
+
+const REL_INDEX = buildIndex(REL);
+const LANG_INDEX = buildIndex(LANG);
+const SECULAR_ARR = Array.from(SECULAR);
+
+export type TagKind = "religion" | "language" | "secular";
+
+export function countriesForTag(kind: TagKind, tag: string): string[] {
+  if (kind === "secular") return SECULAR_ARR;
+  if (kind === "religion") return REL_INDEX[tag] ?? [];
+  return LANG_INDEX[tag] ?? [];
+}
+
+// stable hue per tag string — gives every tag a distinct color
+export function colorForTag(kind: TagKind, tag: string): string {
+  if (kind === "secular") return "hsl(220 10% 55%)";
+  let h = 0;
+  for (let i = 0; i < tag.length; i++) h = (h * 31 + tag.charCodeAt(i)) >>> 0;
+  const hue = h % 360;
+  // religions warmer, languages cooler
+  const sat = kind === "religion" ? 55 : 45;
+  const lig = kind === "religion" ? 58 : 62;
+  return `hsl(${hue} ${sat}% ${lig}%)`;
+}
+
+// All known countries (union of identity sources) — used by the tag panel
+export function allKnownCountries(): string[] {
+  const set = new Set<string>([...Object.keys(REL), ...Object.keys(LANG), ...SECULAR_ARR]);
+  return Array.from(set);
+}
