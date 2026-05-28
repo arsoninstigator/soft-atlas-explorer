@@ -126,7 +126,7 @@ export default function Roadmap() {
                 {e.bullets.map(b => (
                   <li
                     key={b}
-                    className="font-mono text-[12.5px] text-foreground/75 leading-relaxed flex gap-3"
+                    className="text-[14px] text-foreground/80 leading-relaxed flex gap-3"
                   >
                     <span className="text-muted-foreground/70 select-none">·</span>
                     <span>{b}</span>
@@ -135,10 +135,6 @@ export default function Roadmap() {
               </ul>
             </li>
           ))}
-          {/* terminal "next" dot like the screenshot's bottom marker */}
-          <li className="relative h-4">
-            <span className="absolute -left-[34px] md:-left-[42px] top-0 h-3 w-3 rounded-full ring-4 ring-background bg-[hsl(var(--primary))]" />
-          </li>
         </ol>
       </div>
     </Shell>

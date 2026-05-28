@@ -16,7 +16,7 @@ export const REGIONS: Record<string, RegionConfig> = {
   america:      { key:"america",      label:"americas",       center:[8, -72],    zoom: 3, blurb: "two continents read as one long shoreline" },
   northamerica: { key:"northamerica", label:"north america",  center:[45, -100],  zoom: 3, blurb: "boreal forests, plains, and three federations" },
   southamerica: { key:"southamerica", label:"south america",  center:[-15, -60],  zoom: 3, blurb: "andes spine, amazon basin, southern cone" },
-  mena:         { key:"mena",         label:"middle east (mena)", center:[27, 25], zoom: 3.5, blurb: "the middle east threaded through north africa" },
+  mena:         { key:"mena",         label:"middle east (mena)", center:[29, 32], zoom: 5, blurb: "the middle east threaded through north africa" },
   asia:    { key:"asia",    label:"asia",    center:[34, 95],    zoom: 3, blurb: "the largest landmass and its many interiors" },
   africa:  { key:"africa",  label:"africa",  center:[2, 20],     zoom: 3, blurb: "fifty-four sovereignties along old caravan lines" },
   oceania: { key:"oceania", label:"oceania", center:[-22, 145],  zoom: 3, blurb: "an archipelago the size of an ocean" },
