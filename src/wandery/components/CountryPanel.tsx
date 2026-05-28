@@ -1,15 +1,16 @@
 import { X } from "lucide-react";
 import { affiliationsForCountry } from "@/wandery/data/filters";
-import { religionsFor, languagesFor } from "@/wandery/data/identity";
+import { religionsFor, languagesFor, colorForTag, type TagKind } from "@/wandery/data/identity";
 
 interface Props {
   iso: string;
   name: string;
   year: number;
   onClose: () => void;
+  onTag?: (kind: TagKind, tag: string) => void;
 }
 
-export default function CountryPanel({ iso, name, year, onClose }: Props) {
+export default function CountryPanel({ iso, name, year, onClose, onTag }: Props) {
   const affs = affiliationsForCountry(iso);
   const rel = religionsFor(iso);
   const langs = languagesFor(iso);
@@ -46,18 +47,26 @@ export default function CountryPanel({ iso, name, year, onClose }: Props) {
           {rel.secular || rel.tags.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {rel.secular && (
-                <span className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60 bg-muted/60 text-foreground">
+                <button
+                  onClick={() => onTag?.("secular", "secular")}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60 bg-muted/60 text-foreground hover:bg-muted transition-colors"
+                >
                   #secular
-                </span>
+                </button>
               )}
               {rel.tags.map(t => (
-                <span
+                <button
                   key={t}
-                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60"
-                  style={{ background: "hsl(var(--accent) / 0.35)", color: "hsl(var(--foreground))" }}
+                  onClick={() => onTag?.("religion", t)}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border hover:opacity-90 transition-opacity"
+                  style={{
+                    background: colorForTag("religion", t).replace(")", " / 0.22)"),
+                    borderColor: colorForTag("religion", t).replace(")", " / 0.6)"),
+                    color: "hsl(var(--foreground))",
+                  }}
                 >
                   #{t}
-                </span>
+                </button>
               ))}
             </div>
           ) : (
@@ -68,13 +77,18 @@ export default function CountryPanel({ iso, name, year, onClose }: Props) {
           {langs.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {langs.map(l => (
-                <span
+                <button
                   key={l}
-                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60"
-                  style={{ background: "hsl(var(--secondary) / 0.7)", color: "hsl(var(--foreground))" }}
+                  onClick={() => onTag?.("language", l)}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border hover:opacity-90 transition-opacity"
+                  style={{
+                    background: colorForTag("language", l).replace(")", " / 0.22)"),
+                    borderColor: colorForTag("language", l).replace(")", " / 0.6)"),
+                    color: "hsl(var(--foreground))",
+                  }}
                 >
                   #{l}
-                </span>
+                </button>
               ))}
             </div>
           ) : (
