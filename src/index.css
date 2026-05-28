@@ -181,15 +181,15 @@ html.theme-sage {
  * dust the whole pane in a faint cream so it reads as a museum atlas, not a satellite tool.
  */
 .wd-map .leaflet-tile-pane {
-  filter: hue-rotate(298deg) saturate(0.85) brightness(1.06) contrast(0.82);
+  /* match fabnet: warm rose wash, brighter, more saturated */
+  filter: hue-rotate(312deg) saturate(1.45) brightness(1.08) contrast(0.92) sepia(0.18);
 }
 .wd-map::after {
   content: "";
   position: absolute; inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 90% at 50% 50%, rgba(255,245,238,0) 60%, rgba(120,90,110,0.10) 100%),
-    linear-gradient(180deg, rgba(247,225,215,0.06), rgba(222,200,232,0.06));
+    radial-gradient(120% 90% at 50% 50%, rgba(255,235,238,0) 65%, rgba(200,140,160,0.08) 100%);
   mix-blend-mode: multiply;
   z-index: 400;
 }
