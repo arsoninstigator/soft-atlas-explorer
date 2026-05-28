@@ -4,6 +4,29 @@ import { FILTERS, type FilterId } from "@/wandery/data/filters";
 
 const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
 
+/**
+ * Approximate India-claimed boundary of Jammu & Kashmir (including Gilgit-
+ * Baltistan and Aksai Chin). The base world.geo.json renders the de-facto
+ * LoC/LAC; we overlay this polygon so the atlas reads India's claimed outline.
+ * Coordinates: [lng, lat]. Hand-traced approximation.
+ */
+const INDIA_CLAIM_KASHMIR: any = {
+  type: "Feature",
+  id: "IND-CLAIM-KASHMIR",
+  properties: { name: "Kashmir (India claim)", parent: "IND" },
+  geometry: {
+    type: "Polygon",
+    coordinates: [[
+      [74.00, 32.50], [73.90, 33.20], [73.80, 34.00], [73.70, 34.70],
+      [74.10, 35.40], [74.40, 36.20], [74.70, 36.80], [75.40, 37.05],
+      [76.30, 37.00], [77.40, 36.60], [78.40, 35.90], [79.50, 35.50],
+      [80.30, 35.30], [80.40, 34.50], [79.60, 33.80], [78.80, 33.30],
+      [78.50, 32.80], [78.10, 32.55], [77.30, 32.60], [76.50, 32.40],
+      [75.40, 32.30], [74.50, 32.40], [74.00, 32.50],
+    ]],
+  },
+};
+
 // hardcoded continent label anchors for the /world view
 const CONTINENTS: { name: string; pos: [number, number] }[] = [
   { name: "NORTH AMERICA", pos: [46, -100] },
@@ -55,6 +78,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
   const countriesRef = useRef<any>(null);
   const subdivisionsRef = useRef<any>(null);
   const subdivisionsLayer = useRef<any>(null);
+  const claimLayer = useRef<any>(null);
   const [ready, setReady] = useState(false);
   const [subKey, setSubKey] = useState(0);
   const handlersRef = useRef({ onCountry });
@@ -155,6 +179,8 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
     bordersLayer.current = null;
     subdivisionsLayer.current?.remove();
     subdivisionsLayer.current = null;
+    claimLayer.current?.remove();
+    claimLayer.current = null;
 
     const ageFade = Math.max(0, Math.min(1, (year - 1800) / (2025 - 1800)));
     const borderOpacity = toggles.borders ? 0.18 + 0.08 * ageFade : 0.04;
@@ -180,6 +206,30 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
     }).addTo(map);
     bordersLayer.current = base;
     overlayLayers.current.push(base);
+
+    // India's claimed Kashmir — painted as part of India, dashed border = claim
+    const claim = L.geoJSON(INDIA_CLAIM_KASHMIR, {
+      style: () => ({
+        color: "rgba(80,60,70,0.85)",
+        weight: 1.1,
+        opacity: 0.65,
+        dashArray: "4 4",
+        fillColor: "#f4ead8",
+        fillOpacity: 0.32,
+      }),
+      onEachFeature: (_f: any, layer: any) => {
+        layer.on({
+          mouseover: () => layer.setStyle({ fillOpacity: 0.45, weight: 1.4 }),
+          mouseout: () => layer.setStyle({ fillOpacity: 0.32, weight: 1.1 }),
+          click: () => handlersRef.current.onCountry("IND", "India"),
+        });
+        layer.bindTooltip(`<span class="wd-tt-name">Kashmir · India claim</span>`, {
+          direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1,
+        });
+      },
+    }).addTo(map);
+    claimLayer.current = claim;
+    overlayLayers.current.push(claim);
 
     if (subdivisionsRef.current) {
       const sub = L.geoJSON(subdivisionsRef.current, {
