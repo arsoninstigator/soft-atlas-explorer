@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { affiliationsForCountry } from "@/wandery/data/filters";
+import { religionsFor, languagesFor } from "@/wandery/data/identity";
 
 interface Props {
   iso: string;
@@ -10,6 +11,8 @@ interface Props {
 
 export default function CountryPanel({ iso, name, year, onClose }: Props) {
   const affs = affiliationsForCountry(iso);
+  const rel = religionsFor(iso);
+  const langs = languagesFor(iso);
   return (
     <aside className="pointer-events-auto w-[320px] max-w-[90vw] bg-card/85 backdrop-blur-2xl border border-border/70 rounded-2xl shadow-md overflow-hidden">
       <div className="px-5 pt-4 pb-3 border-b border-border/60 flex items-start justify-between">
@@ -37,6 +40,45 @@ export default function CountryPanel({ iso, name, year, onClose }: Props) {
                 </span>
               ))}
             </div>
+          )}
+        </Section>
+        <Section label="religious affiliations">
+          {rel.secular || rel.tags.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5">
+              {rel.secular && (
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60 bg-muted/60 text-foreground">
+                  #secular
+                </span>
+              )}
+              {rel.tags.map(t => (
+                <span
+                  key={t}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60"
+                  style={{ background: "hsl(var(--accent) / 0.35)", color: "hsl(var(--foreground))" }}
+                >
+                  #{t}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground italic">unarchived.</p>
+          )}
+        </Section>
+        <Section label="linguistic affiliations">
+          {langs.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5">
+              {langs.map(l => (
+                <span
+                  key={l}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-border/60"
+                  style={{ background: "hsl(var(--secondary) / 0.7)", color: "hsl(var(--foreground))" }}
+                >
+                  #{l}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground italic">unarchived.</p>
           )}
         </Section>
         <Section label="timeline">
