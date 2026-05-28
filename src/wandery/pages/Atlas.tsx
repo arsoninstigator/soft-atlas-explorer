@@ -7,6 +7,8 @@ import MapControls from "@/wandery/components/MapControls";
 import TimelineDial from "@/wandery/components/TimelineDial";
 import TopBrand from "@/wandery/components/TopBrand";
 import CountryPanel from "@/wandery/components/CountryPanel";
+import TagPanel from "@/wandery/components/TagPanel";
+import type { TagKind } from "@/wandery/data/identity";
 import { Link } from "react-router-dom";
 
 interface Props { region: string }
@@ -18,9 +20,10 @@ export default function Atlas({ region }: Props) {
   const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
+  const [pickedTag, setPickedTag] = useState<{ kind: TagKind; tag: string } | null>(null);
 
   // reset filters when region changes
-  useEffect(() => { setActive([]); setPicked(null); }, [region]);
+  useEffect(() => { setActive([]); setPicked(null); setPickedTag(null); }, [region]);
 
   // body overflow is hidden globally — that's correct for the atlas surface
   useEffect(() => { document.body.style.overflow = "hidden"; }, []);
@@ -81,10 +84,26 @@ export default function Atlas({ region }: Props) {
         <FilterChips available={available} active={active} onToggle={toggle} />
       </div>
 
-      {/* country panel */}
-      {picked && (
+      {/* country / tag panel */}
+      {pickedTag ? (
         <div className="absolute right-20 bottom-24 z-[40]">
-          <CountryPanel iso={picked.iso} name={picked.name} year={year} onClose={() => setPicked(null)} />
+          <TagPanel
+            kind={pickedTag.kind}
+            tag={pickedTag.tag}
+            onPickCountry={(iso, name) => { setPickedTag(null); setPicked({ iso, name }); }}
+            onBack={() => setPickedTag(null)}
+            onClose={() => { setPickedTag(null); setPicked(null); }}
+          />
+        </div>
+      ) : picked && (
+        <div className="absolute right-20 bottom-24 z-[40]">
+          <CountryPanel
+            iso={picked.iso}
+            name={picked.name}
+            year={year}
+            onClose={() => setPicked(null)}
+            onTag={(kind, tag) => setPickedTag({ kind, tag })}
+          />
         </div>
       )}
     </div>
