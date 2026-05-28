@@ -129,6 +129,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       });
     } else {
       countriesRef.current.features.forEach((feat: any) => {
+        if (feat.id === "PSE") return; // merged into Israel visually
         const c = featureCentroid(feat);
         const name = feat.properties?.name;
         if (!c || !name) return;
@@ -159,6 +160,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
     const borderOpacity = toggles.borders ? 0.18 + 0.08 * ageFade : 0.04;
 
     const base = L.geoJSON(countriesRef.current, {
+      filter: (f: any) => f.id !== "PSE",
       style: () => ({
         color: "rgba(80,60,70,1)", weight: 0.6, opacity: borderOpacity,
         fillColor: "#ffffff", fillOpacity: 0,
