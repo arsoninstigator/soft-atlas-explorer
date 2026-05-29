@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ensureLeaflet, loadCountries } from "@/wandery/lib/leaflet";
 import { FILTERS, type FilterId } from "@/wandery/data/filters";
+import { polititiesAt, suppressedIsos, countryExists, COUNTRY_BIRTH } from "@/wandery/data/history";
 
 const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
 
@@ -67,22 +68,24 @@ interface Props {
   labelMode?: "continents" | "countries" | "subdivisions";
   subdivisionsUrl?: string;
   onCountry: (iso: string, name: string) => void;
+  onCountryContext?: (iso: string, name: string, x: number, y: number) => void;
 }
 
-export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, onCountry }: Props) {
+export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, onCountry, onCountryContext }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const labelsLayer = useRef<any>(null);
   const bordersLayer = useRef<any>(null);
   const overlayLayers = useRef<any[]>([]);
+  const historyLayers = useRef<any[]>([]);
   const countriesRef = useRef<any>(null);
   const subdivisionsRef = useRef<any>(null);
   const subdivisionsLayer = useRef<any>(null);
   const claimLayer = useRef<any>(null);
   const [ready, setReady] = useState(false);
   const [subKey, setSubKey] = useState(0);
-  const handlersRef = useRef({ onCountry });
-  useEffect(() => { handlersRef.current = { onCountry }; });
+  const handlersRef = useRef({ onCountry, onCountryContext });
+  useEffect(() => { handlersRef.current = { onCountry, onCountryContext }; });
 
   useEffect(() => {
     ensureLeaflet(async () => {
@@ -175,6 +178,8 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     overlayLayers.current.forEach(l => l.remove());
     overlayLayers.current = [];
+    historyLayers.current.forEach(l => l.remove());
+    historyLayers.current = [];
     bordersLayer.current?.remove();
     bordersLayer.current = null;
     subdivisionsLayer.current?.remove();
@@ -184,28 +189,75 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     const ageFade = Math.max(0, Math.min(1, (year - 1800) / (2025 - 1800)));
     const borderOpacity = toggles.borders ? 0.18 + 0.08 * ageFade : 0.04;
+    const suppressed = suppressedIsos(year);
 
     const base = L.geoJSON(countriesRef.current, {
       filter: (f: any) => f.id !== "PSE",
-      style: () => ({
-        color: "rgba(80,60,70,1)", weight: 0.6, opacity: borderOpacity,
-        fillColor: "#ffffff", fillOpacity: 0,
-      }),
+      style: (f: any) => {
+        const iso = f.id;
+        const inactive = suppressed.has(iso) || !countryExists(iso, year);
+        return {
+          color: "rgba(80,60,70,1)",
+          weight: inactive ? 0.3 : 0.6,
+          opacity: inactive ? 0.08 : borderOpacity,
+          fillColor: "#ffffff",
+          fillOpacity: 0,
+          dashArray: inactive ? "2 3" : undefined,
+        };
+      },
       onEachFeature: (feat: any, layer: any) => {
         const iso = feat.id || feat.properties?.iso_a3 || "";
         const name = feat.properties?.name ?? "";
+        const inactive = suppressed.has(iso) || !countryExists(iso, year);
         layer.on({
           mouseover: () => layer.setStyle({ weight: 1.2, opacity: 0.55, fillColor: "#f4ead8", fillOpacity: 0.18 }),
-          mouseout: () => layer.setStyle({ weight: 0.6, opacity: borderOpacity, fillColor: "#ffffff", fillOpacity: 0 }),
+          mouseout: () => layer.setStyle({
+            weight: inactive ? 0.3 : 0.6,
+            opacity: inactive ? 0.08 : borderOpacity,
+            fillColor: "#ffffff", fillOpacity: 0,
+            dashArray: inactive ? "2 3" : undefined,
+          }),
           click: () => handlersRef.current.onCountry(iso, name),
+          contextmenu: (e: any) => {
+            e.originalEvent?.preventDefault?.();
+            const p = e.originalEvent;
+            handlersRef.current.onCountryContext?.(iso, name, p?.clientX ?? 0, p?.clientY ?? 0);
+          },
         });
-        layer.bindTooltip(`<span class="wd-tt-name">${name}</span>`, {
+        const birth = COUNTRY_BIRTH[iso];
+        const tip = inactive && birth && year < birth
+          ? `<span class="wd-tt-name">${name}</span><span class="wd-tt-meta">est. ${birth}</span>`
+          : `<span class="wd-tt-name">${name}</span>`;
+        layer.bindTooltip(tip, {
           direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1,
         });
       },
     }).addTo(map);
     bordersLayer.current = base;
     overlayLayers.current.push(base);
+
+    // historical polities — paint members of any active polity as one block
+    polititiesAt(year).forEach(p => {
+      const members = new Set(p.members);
+      const layer = L.geoJSON(countriesRef.current, {
+        filter: (f: any) => members.has(f.id),
+        interactive: false,
+        style: () => ({
+          color: `rgb(${p.color})`, weight: 1.1, opacity: 0.7,
+          fillColor: `rgb(${p.color})`, fillOpacity: 0.22,
+        }),
+      }).addTo(map);
+      historyLayers.current.push(layer);
+      const label = L.marker(p.labelAt, {
+        interactive: false,
+        icon: L.divIcon({
+          className: "wd-polity-label",
+          html: `<span>${p.name}</span>`,
+          iconSize: [0, 0],
+        }),
+      }).addTo(map);
+      historyLayers.current.push(label);
+    });
 
     // India's claimed Kashmir — painted as part of India, dashed border = claim
     const claim = L.geoJSON(INDIA_CLAIM_KASHMIR, {
