@@ -155,8 +155,11 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
         }).addTo(group);
       });
     } else {
+      const suppressed = suppressedIsos(year);
       countriesRef.current.features.forEach((feat: any) => {
-        if (feat.id === "PSE") return; // merged into Israel visually
+        const iso = feat.id;
+        if (iso === "PSE") return; // merged into Israel visually
+        if (suppressed.has(iso) || !countryExists(iso, year)) return; // hidden in this era
         const c = featureCentroid(feat);
         const name = feat.properties?.name;
         if (!c || !name) return;
@@ -169,7 +172,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     group.addTo(mapRef.current);
     labelsLayer.current = group;
-  }, [toggles.labels, ready, labelMode, subKey]);
+  }, [toggles.labels, ready, labelMode, subKey, year]);
 
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
@@ -192,30 +195,24 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
     const suppressed = suppressedIsos(year);
 
     const base = L.geoJSON(countriesRef.current, {
-      filter: (f: any) => f.id !== "PSE",
+      filter: (f: any) => f.id !== "PSE" && !suppressed.has(f.id) && countryExists(f.id, year),
       style: (f: any) => {
-        const iso = f.id;
-        const inactive = suppressed.has(iso) || !countryExists(iso, year);
         return {
           color: "rgba(80,60,70,1)",
-          weight: inactive ? 0.3 : 0.6,
-          opacity: inactive ? 0.08 : borderOpacity,
+          weight: 0.6,
+          opacity: borderOpacity,
           fillColor: "#ffffff",
           fillOpacity: 0,
-          dashArray: inactive ? "2 3" : undefined,
         };
       },
       onEachFeature: (feat: any, layer: any) => {
         const iso = feat.id || feat.properties?.iso_a3 || "";
         const name = feat.properties?.name ?? "";
-        const inactive = suppressed.has(iso) || !countryExists(iso, year);
         layer.on({
           mouseover: () => layer.setStyle({ weight: 1.2, opacity: 0.55, fillColor: "#f4ead8", fillOpacity: 0.18 }),
           mouseout: () => layer.setStyle({
-            weight: inactive ? 0.3 : 0.6,
-            opacity: inactive ? 0.08 : borderOpacity,
+            weight: 0.6, opacity: borderOpacity,
             fillColor: "#ffffff", fillOpacity: 0,
-            dashArray: inactive ? "2 3" : undefined,
           }),
           click: () => handlersRef.current.onCountry(iso, name),
           contextmenu: (e: any) => {
@@ -224,11 +221,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
             handlersRef.current.onCountryContext?.(iso, name, p?.clientX ?? 0, p?.clientY ?? 0);
           },
         });
-        const birth = COUNTRY_BIRTH[iso];
-        const tip = inactive && birth && year < birth
-          ? `<span class="wd-tt-name">${name}</span><span class="wd-tt-meta">est. ${birth}</span>`
-          : `<span class="wd-tt-name">${name}</span>`;
-        layer.bindTooltip(tip, {
+        layer.bindTooltip(`<span class="wd-tt-name">${name}</span>`, {
           direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1,
         });
       },
