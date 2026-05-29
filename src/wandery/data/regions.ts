@@ -29,7 +29,7 @@ export const REGIONS: Record<string, RegionConfig> = {
     subdivisionsUrl: "https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson",
   },
   unitedstates: {
-    key: "unitedstates", label: "united states (states)", center: [39, -98], zoom: 4,
+    key: "unitedstates", label: "united states (states)", center: [42, -112], zoom: 3,
     blurb: "fifty states held in a federal weave",
     labelMode: "subdivisions",
     subdivisionsUrl: "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json",
