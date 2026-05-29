@@ -285,6 +285,7 @@ html.theme-sage .leaflet-tile-pane {
 }
 .wd-hover-tooltip::before { display: none !important; }
 .wd-tt-name { color: hsl(var(--foreground)); }
+.wd-tt-meta { display:block; font-style: italic; opacity: 0.65; margin-top: 2px; text-transform: none; letter-spacing: 0.05em; }
 
 /* wandery country labels (rendered from GeoJSON, always english) */
 .wd-country-label {
@@ -320,6 +321,19 @@ html.theme-sage .leaflet-tile-pane {
   text-transform: uppercase;
   color: hsl(var(--foreground) / 0.42);
   text-shadow: 0 0 8px hsl(var(--background)), 0 0 16px hsl(var(--background));
+  white-space: nowrap;
+}
+
+/* historical polity labels (USSR, British Raj, ...) */
+.wd-polity-label { pointer-events:none; background:transparent !important; border:none !important; }
+.wd-polity-label span {
+  display:inline-block; transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: hsl(var(--foreground) / 0.78);
+  text-shadow: 0 0 6px hsl(var(--background)), 0 0 12px hsl(var(--background));
   white-space: nowrap;
 }
 

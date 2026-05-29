@@ -32,6 +32,9 @@ const App = () => (
           <Route path="/oceania" element={<Atlas region="oceania" />} />
           <Route path="/country/canada" element={<Atlas region="canada" />} />
           <Route path="/country/unitedstates" element={<Atlas region="unitedstates" />} />
+          <Route path="/country/unitedkingdom" element={<Atlas region="unitedkingdom" />} />
+          <Route path="/country/australia" element={<Atlas region="australia" />} />
+          <Route path="/country/newzealand" element={<Atlas region="newzealand" />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />
