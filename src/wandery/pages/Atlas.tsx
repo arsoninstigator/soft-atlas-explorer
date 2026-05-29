@@ -9,21 +9,34 @@ import TopBrand from "@/wandery/components/TopBrand";
 import CountryPanel from "@/wandery/components/CountryPanel";
 import TagPanel from "@/wandery/components/TagPanel";
 import type { TagKind } from "@/wandery/data/identity";
-import { Link } from "react-router-dom";
+import { COUNTRY_PAGE } from "@/wandery/data/history";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props { region: string }
 
 export default function Atlas({ region }: Props) {
   const config = REGIONS[region] ?? REGIONS.world;
   const available = filtersFor(region);
+  const nav = useNavigate();
   const [active, setActive] = useState<FilterId[]>([]);
   const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
   const [pickedTag, setPickedTag] = useState<{ kind: TagKind; tag: string } | null>(null);
+  const [menu, setMenu] = useState<{ iso: string; name: string; x: number; y: number } | null>(null);
 
   // reset filters when region changes
-  useEffect(() => { setActive([]); setPicked(null); setPickedTag(null); }, [region]);
+  useEffect(() => { setActive([]); setPicked(null); setPickedTag(null); setMenu(null); }, [region]);
+
+  // dismiss menu on any outside click / escape
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setMenu(null); };
+    window.addEventListener("click", close);
+    window.addEventListener("keydown", esc);
+    return () => { window.removeEventListener("click", close); window.removeEventListener("keydown", esc); };
+  }, [menu]);
 
   // body overflow is hidden globally — that's correct for the atlas surface
   useEffect(() => { document.body.style.overflow = "hidden"; }, []);
@@ -42,6 +55,7 @@ export default function Atlas({ region }: Props) {
         labelMode={config.labelMode ?? "countries"}
         subdivisionsUrl={config.subdivisionsUrl}
         onCountry={(iso, name) => setPicked({ iso, name })}
+        onCountryContext={(iso, name, x, y) => setMenu({ iso, name, x, y })}
       />
 
       {/* atmospheric vignette */}
@@ -106,6 +120,40 @@ export default function Atlas({ region }: Props) {
           />
         </div>
       )}
+
+      {/* right-click context menu */}
+      {menu && (() => {
+        const slug = COUNTRY_PAGE[menu.iso];
+        const enabled = Boolean(slug);
+        return (
+          <div
+            className="fixed z-[80] bg-card/95 backdrop-blur-xl border border-border/70 rounded-xl shadow-md py-1 min-w-[200px] animate-fade-in"
+            style={{ left: menu.x, top: menu.y }}
+            onClick={(e) => e.stopPropagation()}
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            <div className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground/80 border-b border-border/60">
+              {menu.name}
+            </div>
+            <button
+              disabled={!enabled}
+              onClick={() => { if (enabled) { setMenu(null); nav(`/country/${slug}`); } }}
+              className={[
+                "block w-full text-left px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors",
+                enabled ? "text-foreground hover:bg-muted/60" : "text-muted-foreground/40 cursor-not-allowed",
+              ].join(" ")}
+            >
+              open country map
+            </button>
+            <button
+              onClick={() => { setMenu(null); setPicked({ iso: menu.iso, name: menu.name }); }}
+              className="block w-full text-left px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground hover:bg-muted/60"
+            >
+              show archive entry
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 }
