@@ -9,6 +9,7 @@ import About from "@/wandery/pages/About";
 import Philosophy from "@/wandery/pages/Philosophy";
 import Features from "@/wandery/pages/Features";
 import Roadmap from "@/wandery/pages/Roadmap";
+import Conflict from "@/wandery/pages/Conflict";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,8 @@ const App = () => (
           <Route path="/country/unitedkingdom" element={<Atlas region="unitedkingdom" />} />
           <Route path="/country/australia" element={<Atlas region="australia" />} />
           <Route path="/country/newzealand" element={<Atlas region="newzealand" />} />
+          <Route path="/conflict/kashmir" element={<Conflict id="kashmir" />} />
+          <Route path="/conflict/palestine" element={<Conflict id="palestine" />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />
