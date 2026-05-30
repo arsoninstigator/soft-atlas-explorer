@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { ensureLeaflet, loadCountries } from "@/wandery/lib/leaflet";
 import { FILTERS, type FilterId } from "@/wandery/data/filters";
 import { polititiesAt, suppressedIsos, countryExists, COUNTRY_BIRTH } from "@/wandery/data/history";
+import { countriesForTag, colorForTag, type TagKind } from "@/wandery/data/identity";
+import { legalBlend, type LegalSystem } from "@/wandery/data/legal";
 
 const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
 
@@ -67,11 +69,14 @@ interface Props {
   year: number;
   labelMode?: "continents" | "countries" | "subdivisions";
   subdivisionsUrl?: string;
+  highlightTag?: { kind: TagKind; tag: string } | null;
+  legalActive?: LegalSystem[];
+  labelOverrides?: Record<string, string>;
   onCountry: (iso: string, name: string) => void;
   onCountryContext?: (iso: string, name: string, x: number, y: number) => void;
 }
 
-export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, onCountry, onCountryContext }: Props) {
+export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, highlightTag, legalActive, labelOverrides, onCountry, onCountryContext }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const labelsLayer = useRef<any>(null);
@@ -161,7 +166,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
         if (iso === "PSE") return; // merged into Israel visually
         if (suppressed.has(iso) || !countryExists(iso, year)) return; // hidden in this era
         const c = featureCentroid(feat);
-        const name = feat.properties?.name;
+        const name = labelOverrides?.[iso] ?? feat.properties?.name;
         if (!c || !name) return;
         L.marker(c, {
           interactive: false,
@@ -172,7 +177,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     group.addTo(mapRef.current);
     labelsLayer.current = group;
-  }, [toggles.labels, ready, labelMode, subKey, year]);
+  }, [toggles.labels, ready, labelMode, subKey, year, labelOverrides]);
 
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
@@ -207,7 +212,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       },
       onEachFeature: (feat: any, layer: any) => {
         const iso = feat.id || feat.properties?.iso_a3 || "";
-        const name = feat.properties?.name ?? "";
+        const name = labelOverrides?.[iso] ?? feat.properties?.name ?? "";
         layer.on({
           mouseover: () => layer.setStyle({ weight: 1.2, opacity: 0.55, fillColor: "#f4ead8", fillOpacity: 0.18 }),
           mouseout: () => layer.setStyle({
@@ -321,7 +326,47 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       }).addTo(map);
       overlayLayers.current.push(halo);
     });
-  }, [ready, activeFilters.join("|"), toggles.borders, year, subKey]);
+
+    // ── tag highlight overlay (from country preview chip click) ──
+    if (highlightTag) {
+      const isos = new Set(countriesForTag(highlightTag.kind, highlightTag.tag));
+      const tagColor = colorForTag(highlightTag.kind, highlightTag.tag); // hsl(...)
+      const fill = L.geoJSON(countriesRef.current, {
+        filter: (f: any) => isos.has(f.id),
+        interactive: false,
+        style: () => ({
+          color: tagColor, weight: 1.0, opacity: 0.7,
+          fillColor: tagColor, fillOpacity: 0.42,
+        }),
+      }).addTo(map);
+      overlayLayers.current.push(fill);
+      const halo = L.geoJSON(countriesRef.current, {
+        filter: (f: any) => isos.has(f.id),
+        interactive: false,
+        style: () => ({ color: tagColor, weight: 5, opacity: 0.15, fill: false }),
+      }).addTo(map);
+      overlayLayers.current.push(halo);
+    }
+
+    // ── legal system filter overlay (blended for hybrids) ──
+    const legal = legalActive ?? [];
+    if (legal.length) {
+      const styleFor = (f: any) => {
+        const iso = f.id;
+        const blend = legalBlend(iso, legal);
+        if (!blend) return { opacity: 0, fillOpacity: 0, color: "transparent", fillColor: "transparent" };
+        const rgb = `rgb(${blend.join(",")})`;
+        return { color: rgb, weight: 0.6, opacity: 0.5, fillColor: rgb, fillOpacity: 0.38 };
+      };
+      const layer = L.geoJSON(countriesRef.current, {
+        filter: (f: any) => !!legalBlend(f.id, legal),
+        interactive: false,
+        style: styleFor,
+      }).addTo(map);
+      overlayLayers.current.push(layer);
+    }
+  }, [ready, activeFilters.join("|"), toggles.borders, year, subKey,
+      highlightTag?.kind, highlightTag?.tag, (legalActive ?? []).join("|"), labelOverrides]);
 
   return <div ref={ref} className="absolute inset-0 wd-map" />;
 }
