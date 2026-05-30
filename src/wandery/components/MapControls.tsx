@@ -1,9 +1,11 @@
-import { Layers, Tag, Mountain, Square, MapPin } from "lucide-react";
+import { Layers, Tag, Mountain, Square, MapPin, SlidersHorizontal } from "lucide-react";
 import type { ToggleState } from "./AtlasMap";
 
 interface Props {
   toggles: ToggleState;
   setToggles: (t: ToggleState) => void;
+  filterOpen?: boolean;
+  onToggleFilter?: () => void;
 }
 
 const Btn = ({ on, onClick, title, children }: any) => (
@@ -21,11 +23,12 @@ const Btn = ({ on, onClick, title, children }: any) => (
   </button>
 );
 
-export default function MapControls({ toggles, setToggles }: Props) {
+export default function MapControls({ toggles, setToggles, filterOpen, onToggleFilter }: Props) {
   const set = (k: keyof ToggleState) => () => setToggles({ ...toggles, [k]: !toggles[k] });
   return (
     <div className="pointer-events-auto flex flex-col gap-1.5">
       <Btn on={toggles.labels}  onClick={set("labels")}  title="labels"><Tag className="h-3.5 w-3.5" /></Btn>
+      <Btn on={!!filterOpen}    onClick={onToggleFilter} title="filter"><SlidersHorizontal className="h-3.5 w-3.5" /></Btn>
       <Btn on={toggles.borders} onClick={set("borders")} title="borders"><Square className="h-3.5 w-3.5" /></Btn>
       <Btn on={toggles.terrain} onClick={set("terrain")} title="terrain"><Mountain className="h-3.5 w-3.5" /></Btn>
       <Btn on={toggles.pins}    onClick={set("pins")}    title="pins"><MapPin className="h-3.5 w-3.5" /></Btn>

@@ -8,13 +8,20 @@ import TimelineDial from "@/wandery/components/TimelineDial";
 import TopBrand from "@/wandery/components/TopBrand";
 import CountryPanel from "@/wandery/components/CountryPanel";
 import TagPanel from "@/wandery/components/TagPanel";
+import TagSpotlight from "@/wandery/components/TagSpotlight";
+import LegalFilterPanel from "@/wandery/components/LegalFilterPanel";
 import type { TagKind } from "@/wandery/data/identity";
+import type { LegalSystem } from "@/wandery/data/legal";
 import { COUNTRY_PAGE } from "@/wandery/data/history";
 import { Link, useNavigate } from "react-router-dom";
 
-interface Props { region: string }
+interface Props {
+  region: string;
+  /** when set, overrides displayed names for select ISOs (used by conflict pages) */
+  labelOverrides?: Record<string, string>;
+}
 
-export default function Atlas({ region }: Props) {
+export default function Atlas({ region, labelOverrides }: Props) {
   const config = REGIONS[region] ?? REGIONS.world;
   const available = filtersFor(region);
   const nav = useNavigate();
@@ -22,11 +29,17 @@ export default function Atlas({ region }: Props) {
   const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
-  const [pickedTag, setPickedTag] = useState<{ kind: TagKind; tag: string } | null>(null);
+  const [tagFocus, setTagFocus] = useState<{ kind: TagKind; tag: string } | null>(null);
+  const [tagListOpen, setTagListOpen] = useState(false);
+  const [legalOpen, setLegalOpen] = useState(false);
+  const [legalActive, setLegalActive] = useState<LegalSystem[]>([]);
   const [menu, setMenu] = useState<{ iso: string; name: string; x: number; y: number } | null>(null);
 
   // reset filters when region changes
-  useEffect(() => { setActive([]); setPicked(null); setPickedTag(null); setMenu(null); }, [region]);
+  useEffect(() => {
+    setActive([]); setPicked(null); setTagFocus(null); setTagListOpen(false);
+    setLegalActive([]); setLegalOpen(false); setMenu(null);
+  }, [region]);
 
   // dismiss menu on any outside click / escape
   useEffect(() => {
@@ -54,6 +67,9 @@ export default function Atlas({ region }: Props) {
         year={year}
         labelMode={config.labelMode ?? "countries"}
         subdivisionsUrl={config.subdivisionsUrl}
+        highlightTag={tagFocus}
+        legalActive={legalActive}
+        labelOverrides={labelOverrides}
         onCountry={(iso, name) => setPicked({ iso, name })}
         onCountryContext={(iso, name, x, y) => setMenu({ iso, name, x, y })}
       />
@@ -85,8 +101,37 @@ export default function Atlas({ region }: Props) {
 
       {/* right side: map controls */}
       <div className="absolute right-5 top-1/2 -translate-y-1/2 z-[30]">
-        <MapControls toggles={toggles} setToggles={setToggles} />
+        <MapControls
+          toggles={toggles}
+          setToggles={setToggles}
+          filterOpen={legalOpen}
+          onToggleFilter={() => setLegalOpen(v => !v)}
+        />
       </div>
+
+      {/* legal-systems filter panel — anchors to the right rail */}
+      {legalOpen && (
+        <div className="absolute right-16 top-1/2 -translate-y-1/2 z-[40]">
+          <LegalFilterPanel
+            active={legalActive}
+            onToggle={(s) => setLegalActive(a => a.includes(s) ? a.filter(x => x !== s) : [...a, s])}
+            onClose={() => setLegalOpen(false)}
+          />
+        </div>
+      )}
+
+      {/* tag spotlight — always shown while a tag is focused */}
+      {tagFocus && (
+        <div className="absolute top-24 left-1/2 -translate-x-1/2 z-[35]">
+          <TagSpotlight
+            kind={tagFocus.kind}
+            tag={tagFocus.tag}
+            listOpen={tagListOpen}
+            onToggleList={() => setTagListOpen(v => !v)}
+            onClose={() => { setTagFocus(null); setTagListOpen(false); }}
+          />
+        </div>
+      )}
 
       {/* lower-left: timeline */}
       <div className="absolute bottom-24 left-5 z-[30]">
@@ -99,14 +144,14 @@ export default function Atlas({ region }: Props) {
       </div>
 
       {/* country / tag panel */}
-      {pickedTag ? (
+      {tagFocus && tagListOpen ? (
         <div className="absolute right-20 bottom-24 z-[40]">
           <TagPanel
-            kind={pickedTag.kind}
-            tag={pickedTag.tag}
-            onPickCountry={(iso, name) => { setPickedTag(null); setPicked({ iso, name }); }}
-            onBack={() => setPickedTag(null)}
-            onClose={() => { setPickedTag(null); setPicked(null); }}
+            kind={tagFocus.kind}
+            tag={tagFocus.tag}
+            onPickCountry={(iso, name) => { setTagListOpen(false); setPicked({ iso, name }); }}
+            onBack={() => setTagListOpen(false)}
+            onClose={() => { setTagFocus(null); setTagListOpen(false); setPicked(null); }}
           />
         </div>
       ) : picked && (
@@ -116,7 +161,7 @@ export default function Atlas({ region }: Props) {
             name={picked.name}
             year={year}
             onClose={() => setPicked(null)}
-            onTag={(kind, tag) => setPickedTag({ kind, tag })}
+            onTag={(kind, tag) => { setTagFocus({ kind, tag }); setTagListOpen(false); }}
           />
         </div>
       )}

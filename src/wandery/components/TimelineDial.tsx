@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronUp, ChevronDown, Clock, X } from "lucide-react";
 
-const MIN = 1800;
+const MIN = 1200;
 const MAX = 2025;
-const STOPS = [1800, 1914, 1945, 1991, 2025];
+const STOPS = [1200, 1500, 1800, 1914, 1945, 1991, 2025];
 const ERAS: Record<number, string> = {
+  1200: "medieval cartography",
+  1500: "age of empires",
   1800: "imperial cartography",
   1914: "the long summer",
   1945: "post-war redrawings",
@@ -93,7 +95,7 @@ function DigitReel({ value, index, onChange }: { value: number; index: number; o
   const ref = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ startY: number; startV: number } | null>(null);
 
-  // thousand digit is fixed at 1 or 2 (year range is 1800..2025).
+  // thousand digit is fixed at 1 or 2 (year range is 1200..2025).
   const allowed = index === 0 ? [1, 2] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const minV = allowed[0];
   const maxV = allowed[allowed.length - 1];
