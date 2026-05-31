@@ -181,15 +181,16 @@ html.theme-sage {
  * dust the whole pane in a faint cream so it reads as a museum atlas, not a satellite tool.
  */
 .wd-map .leaflet-tile-pane {
-  /* match fabnet: warm rose wash, brighter, more saturated */
-  filter: hue-rotate(312deg) saturate(1.45) brightness(1.08) contrast(0.92) sepia(0.18);
+  /* match fabnet screenshot: pink-rose land, soft mint surrounds, high pop */
+  filter: sepia(0.55) hue-rotate(295deg) saturate(2.2) brightness(1.08) contrast(0.94);
 }
 .wd-map::after {
   content: "";
   position: absolute; inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 90% at 50% 50%, rgba(255,235,238,0) 65%, rgba(200,140,160,0.08) 100%);
+    radial-gradient(120% 90% at 50% 50%, rgba(255,225,232,0) 60%, rgba(220,130,160,0.14) 100%),
+    linear-gradient(rgba(255,200,215,0.05), rgba(255,200,215,0.05));
   mix-blend-mode: multiply;
   z-index: 400;
 }
@@ -200,7 +201,7 @@ html.theme-sage {
 }
 
 html.theme-pink .leaflet-tile-pane {
-  filter: hue-rotate(312deg) saturate(1.35) brightness(1.05) contrast(0.92) sepia(0.18) !important;
+  filter: sepia(0.55) hue-rotate(295deg) saturate(2.2) brightness(1.08) contrast(0.94) !important;
 }
 
 html.theme-sage .leaflet-tile-pane {

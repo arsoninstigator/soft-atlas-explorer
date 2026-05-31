@@ -88,10 +88,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
 
       {/* top-left meta */}
       <div className="absolute top-5 left-5 z-[30] pointer-events-auto">
-        <Link to="/" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
-          ← index
-        </Link>
-        <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80">
           atlas · {config.label}
         </div>
         <div className="mt-0.5 text-[11px] italic text-muted-foreground max-w-[220px] leading-snug">
