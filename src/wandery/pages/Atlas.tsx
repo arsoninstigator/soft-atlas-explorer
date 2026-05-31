@@ -33,12 +33,13 @@ export default function Atlas({ region, labelOverrides }: Props) {
   const [tagListOpen, setTagListOpen] = useState(false);
   const [legalOpen, setLegalOpen] = useState(false);
   const [legalActive, setLegalActive] = useState<LegalSystem[]>([]);
+  const [legalSubActive, setLegalSubActive] = useState<string[]>([]);
   const [menu, setMenu] = useState<{ iso: string; name: string; x: number; y: number } | null>(null);
 
   // reset filters when region changes
   useEffect(() => {
     setActive([]); setPicked(null); setTagFocus(null); setTagListOpen(false);
-    setLegalActive([]); setLegalOpen(false); setMenu(null);
+    setLegalActive([]); setLegalSubActive([]); setLegalOpen(false); setMenu(null);
   }, [region]);
 
   // dismiss menu on any outside click / escape
@@ -69,6 +70,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
         subdivisionsUrl={config.subdivisionsUrl}
         highlightTag={tagFocus}
         legalActive={legalActive}
+        legalSubActive={legalSubActive}
         labelOverrides={labelOverrides}
         onCountry={(iso, name) => setPicked({ iso, name })}
         onCountryContext={(iso, name, x, y) => setMenu({ iso, name, x, y })}
@@ -111,7 +113,9 @@ export default function Atlas({ region, labelOverrides }: Props) {
         <div className="absolute right-16 top-1/2 -translate-y-1/2 z-[40]">
           <LegalFilterPanel
             active={legalActive}
+            subActive={legalSubActive}
             onToggle={(s) => setLegalActive(a => a.includes(s) ? a.filter(x => x !== s) : [...a, s])}
+            onToggleSub={(k) => setLegalSubActive(a => a.includes(k) ? a.filter(x => x !== k) : [...a, k])}
             onClose={() => setLegalOpen(false)}
           />
         </div>
