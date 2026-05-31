@@ -11,6 +11,12 @@ import Features from "@/wandery/pages/Features";
 import Roadmap from "@/wandery/pages/Roadmap";
 import Conflict from "@/wandery/pages/Conflict";
 import Conflicts from "@/wandery/pages/Conflicts";
+import { useParams } from "react-router-dom";
+
+const ConflictRoute = () => {
+  const { id } = useParams<{ id: string }>();
+  return <Conflict id={id ?? "kashmir"} />;
+};
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
