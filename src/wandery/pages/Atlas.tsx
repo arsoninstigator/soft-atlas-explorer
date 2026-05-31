@@ -13,7 +13,7 @@ import LegalFilterPanel from "@/wandery/components/LegalFilterPanel";
 import type { TagKind } from "@/wandery/data/identity";
 import type { LegalSystem } from "@/wandery/data/legal";
 import { COUNTRY_PAGE } from "@/wandery/data/history";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   region: string;
