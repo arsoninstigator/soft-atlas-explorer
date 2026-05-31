@@ -71,12 +71,13 @@ interface Props {
   subdivisionsUrl?: string;
   highlightTag?: { kind: TagKind; tag: string } | null;
   legalActive?: LegalSystem[];
+  legalSubActive?: string[];
   labelOverrides?: Record<string, string>;
   onCountry: (iso: string, name: string) => void;
   onCountryContext?: (iso: string, name: string, x: number, y: number) => void;
 }
 
-export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, highlightTag, legalActive, labelOverrides, onCountry, onCountryContext }: Props) {
+export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, highlightTag, legalActive, legalSubActive, labelOverrides, onCountry, onCountryContext }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const labelsLayer = useRef<any>(null);
@@ -350,23 +351,24 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     // ── legal system filter overlay (blended for hybrids) ──
     const legal = legalActive ?? [];
+    const subs = legalSubActive ?? [];
     if (legal.length) {
       const styleFor = (f: any) => {
         const iso = f.id;
-        const blend = legalBlend(iso, legal);
+        const blend = legalBlend(iso, legal, subs);
         if (!blend) return { opacity: 0, fillOpacity: 0, color: "transparent", fillColor: "transparent" };
         const rgb = `rgb(${blend.join(",")})`;
         return { color: rgb, weight: 0.6, opacity: 0.5, fillColor: rgb, fillOpacity: 0.38 };
       };
       const layer = L.geoJSON(countriesRef.current, {
-        filter: (f: any) => !!legalBlend(f.id, legal),
+        filter: (f: any) => !!legalBlend(f.id, legal, subs),
         interactive: false,
         style: styleFor,
       }).addTo(map);
       overlayLayers.current.push(layer);
     }
   }, [ready, activeFilters.join("|"), toggles.borders, year, subKey,
-      highlightTag?.kind, highlightTag?.tag, (legalActive ?? []).join("|"), labelOverrides]);
+      highlightTag?.kind, highlightTag?.tag, (legalActive ?? []).join("|"), (legalSubActive ?? []).join("|"), labelOverrides]);
 
   return <div ref={ref} className="absolute inset-0 wd-map" />;
 }

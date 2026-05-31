@@ -13,7 +13,7 @@ import LegalFilterPanel from "@/wandery/components/LegalFilterPanel";
 import type { TagKind } from "@/wandery/data/identity";
 import type { LegalSystem } from "@/wandery/data/legal";
 import { COUNTRY_PAGE } from "@/wandery/data/history";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   region: string;
@@ -33,12 +33,13 @@ export default function Atlas({ region, labelOverrides }: Props) {
   const [tagListOpen, setTagListOpen] = useState(false);
   const [legalOpen, setLegalOpen] = useState(false);
   const [legalActive, setLegalActive] = useState<LegalSystem[]>([]);
+  const [legalSubActive, setLegalSubActive] = useState<string[]>([]);
   const [menu, setMenu] = useState<{ iso: string; name: string; x: number; y: number } | null>(null);
 
   // reset filters when region changes
   useEffect(() => {
     setActive([]); setPicked(null); setTagFocus(null); setTagListOpen(false);
-    setLegalActive([]); setLegalOpen(false); setMenu(null);
+    setLegalActive([]); setLegalSubActive([]); setLegalOpen(false); setMenu(null);
   }, [region]);
 
   // dismiss menu on any outside click / escape
@@ -69,6 +70,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
         subdivisionsUrl={config.subdivisionsUrl}
         highlightTag={tagFocus}
         legalActive={legalActive}
+        legalSubActive={legalSubActive}
         labelOverrides={labelOverrides}
         onCountry={(iso, name) => setPicked({ iso, name })}
         onCountryContext={(iso, name, x, y) => setMenu({ iso, name, x, y })}
@@ -88,10 +90,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
 
       {/* top-left meta */}
       <div className="absolute top-5 left-5 z-[30] pointer-events-auto">
-        <Link to="/" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
-          ← index
-        </Link>
-        <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80">
           atlas · {config.label}
         </div>
         <div className="mt-0.5 text-[11px] italic text-muted-foreground max-w-[220px] leading-snug">
@@ -114,7 +113,9 @@ export default function Atlas({ region, labelOverrides }: Props) {
         <div className="absolute right-16 top-1/2 -translate-y-1/2 z-[40]">
           <LegalFilterPanel
             active={legalActive}
+            subActive={legalSubActive}
             onToggle={(s) => setLegalActive(a => a.includes(s) ? a.filter(x => x !== s) : [...a, s])}
+            onToggleSub={(k) => setLegalSubActive(a => a.includes(k) ? a.filter(x => x !== k) : [...a, k])}
             onClose={() => setLegalOpen(false)}
           />
         </div>
