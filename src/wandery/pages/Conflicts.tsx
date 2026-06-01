@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Filter, Search, X } from "lucide-react";
 import { CONFLICTS, type ConflictDef } from "./Conflict";
 
@@ -14,7 +14,6 @@ const ISO_NAME: Record<string, string> = {
 function partyLabel(iso: string) { return ISO_NAME[iso] ?? iso.toLowerCase(); }
 
 export default function Conflicts() {
-  const nav = useNavigate();
   const [filter, setFilter] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [query, setQuery] = useState("");
