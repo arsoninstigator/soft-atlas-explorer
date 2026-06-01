@@ -36,6 +36,18 @@ const CARDS: Card[] = [
   { eyebrow: "system 09", title: "archival map exploration",
     body: "future-loaded: scans of paper atlases, ottoman, soviet, hanseatic. wandery is built so these can drop in as quiet additional layers.",
     swatches: ["islandnations","landlocked","globalsouth"] },
+  { eyebrow: "system 10", title: "conflict perspective atlas",
+    body: "a dedicated /conflicts index of contested regions. each card opens a map that swaps names, borders and legends to match whichever side of the dispute you're reading from.",
+    swatches: ["nato","postsoviet","arabworld"] },
+  { eyebrow: "system 11", title: "legal systems filter",
+    body: "common law, civil law, religious, customary — nested into sub-traditions (napoleonic, germanic, sharia, halakha). hybrid jurisdictions render as the literal blend of their parent hues.",
+    swatches: ["commonwealth","francophone","arabworld"] },
+  { eyebrow: "system 12", title: "cross-linked tag spotlight",
+    body: "click a tag inside any country card and the map lights up everyone else who carries it. toggle back to a tidy list view at any time. tags chain — language, religion, bloc, era.",
+    swatches: ["francophone","slavic","nordic"] },
+  { eyebrow: "system 13", title: "country-level sub-atlases",
+    body: "the united states, canada, the united kingdom, australia, new zealand each open as their own surface — states, provinces, devolved nations and overseas territories included.",
+    swatches: ["anglosphere","commonwealth","g20"] },
 ];
 
 export default function Features() {
