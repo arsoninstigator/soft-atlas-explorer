@@ -167,9 +167,102 @@ function Sections() {
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {HIGHLIGHTS.map(h => (
-              <div key={h.title} className="group relative rounded-2xl border border-border/60 bg-card/70 backdrop-blur-md p-6 overflow-hidden hover:border-foreground/30 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                <div aria-hidden className="absolute -top-10 -right-10 h-40 w-40 rounded-full blur-3xl opacity-70 group-hover:opacity-90 transition-opacity" style={{ background: h.tint }} />
-                <h.icon className="relative h-4 w-4 text-primary mb-4" />
+              <HighlightCard key={h.title} {...h} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* regions */}
+      <section className="relative px-6 py-24 border-t border-border/60 bg-muted/40">
+        <div className="max-w-6xl mx-auto">
+          <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-3">enter by region</div>
+          <h2 className="font-serif italic text-[36px] md:text-[44px] leading-[1.05] text-foreground/90 max-w-2xl">
+            pick a continent, or a contested coastline.
+          </h2>
+
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3">
+            {REGIONS.map(r => (
+              <Link key={r.to} to={r.to} className="group rounded-xl border border-border/60 bg-card/80 backdrop-blur-md p-5 hover:border-foreground/30 hover:shadow-md transition-all">
+                <div className="font-serif text-[22px] text-foreground/90 group-hover:text-foreground">{r.label}</div>
+                <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">{r.sub}</div>
+                <div className="mt-4 flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.22em] text-primary/90 group-hover:translate-x-0.5 transition-transform">
+                  open <ArrowRight className="h-3 w-3" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* country sub-atlases */}
+      <section className="relative px-6 py-24 border-t border-border/60">
+        <div className="max-w-6xl mx-auto">
+          <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-3">country sub-atlases</div>
+          <h2 className="font-serif italic text-[36px] md:text-[44px] leading-[1.05] text-foreground/90 max-w-2xl">
+            states, provinces, devolved nations.
+          </h2>
+          <p className="mt-4 max-w-xl text-[14px] italic text-muted-foreground">
+            a handful of countries open into their own surfaces — internal divisions, overseas territories and all.
+          </p>
+
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+            {SUBATLASES.map(s => (
+              <Link key={s.to} to={s.to} className="rounded-xl border border-border/60 bg-card/70 backdrop-blur-md p-4 hover:border-foreground/30 hover:bg-card transition-colors">
+                <BookOpen className="h-3.5 w-3.5 text-primary mb-2" />
+                <div className="font-serif text-[18px] text-foreground/90">{s.label}</div>
+                <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">{s.sub}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* philosophy strip */}
+      <section className="relative px-6 py-28 border-t border-border/60 bg-gradient-to-b from-background to-muted/40">
+        <div className="max-w-3xl mx-auto text-center">
+          <GitBranch className="h-5 w-5 text-primary mx-auto mb-5" />
+          <h2 className="font-serif italic text-[32px] md:text-[40px] leading-[1.1] text-foreground/90">
+            "a map is never neutral. wandery just shows you whose hand it's drawn by."
+          </h2>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link to="/philosophy" className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/70 bg-card/70 backdrop-blur-xl font-mono text-[10px] uppercase tracking-[0.22em] text-foreground hover:bg-card transition-colors">
+              read the philosophy
+            </Link>
+            <Link to="/roadmap" className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/70 bg-card/70 backdrop-blur-xl font-mono text-[10px] uppercase tracking-[0.22em] text-foreground hover:bg-card transition-colors">
+              see the roadmap
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* footer */}
+      <footer className="border-t border-border/60 px-6 py-10 bg-background">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+          <span>wandery · a living atlas · cherry & thistle</span>
+          <div className="flex items-center gap-5">
+            <Link to="/world" className="hover:text-foreground">world</Link>
+            <Link to="/conflicts" className="hover:text-foreground">conflicts</Link>
+            <Link to="/features" className="hover:text-foreground">features</Link>
+            <Link to="/about" className="hover:text-foreground">about</Link>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+function HighlightCard({ icon: Icon, eyebrow, title, body, tint }: { icon: any; eyebrow: string; title: string; body: string; tint: string }) {
+  return (
+    <div className="group relative rounded-2xl border border-border/60 bg-card/70 backdrop-blur-md p-6 overflow-hidden hover:border-foreground/30 transition-all hover:-translate-y-0.5 hover:shadow-md">
+      <div aria-hidden className="absolute -top-10 -right-10 h-40 w-40 rounded-full blur-3xl opacity-70 group-hover:opacity-90 transition-opacity" style={{ background: tint }} />
+      <Icon className="relative h-4 w-4 text-primary mb-4" />
+      <div className="relative font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground mb-2">{eyebrow}</div>
+      <h3 className="relative font-serif text-[22px] leading-tight text-foreground mb-2">{title}</h3>
+      <p className="relative text-[13px] leading-relaxed text-foreground/75">{body}</p>
+    </div>
+  );
+}
                 <div className="relative font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground mb-2">{h.eyebrow}</div>
                 <h3 className="relative font-serif text-[22px] leading-tight text-foreground mb-2">{h.title}</h3>
                 <p className="relative text-[13px] leading-relaxed text-foreground/75">{h.body}</p>
