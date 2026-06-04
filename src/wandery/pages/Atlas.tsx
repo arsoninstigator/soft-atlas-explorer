@@ -194,12 +194,6 @@ export default function Atlas({ region, labelOverrides }: Props) {
               open country map
             </button>
             <button
-              onClick={() => { setMenu(null); setPicked({ iso: menu.iso, name: menu.name }); }}
-              className="block w-full text-left px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground hover:bg-muted/60"
-            >
-              show archive entry
-            </button>
-            <button
               disabled={!archiveEnabled}
               onClick={() => { if (archiveEnabled) { setMenu(null); nav(`/archive/${menu.iso}`); } }}
               className={[
@@ -207,7 +201,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
                 archiveEnabled ? "text-foreground hover:bg-muted/60" : "text-muted-foreground/40 cursor-not-allowed",
               ].join(" ")}
             >
-              open full archive page
+              show archive entry
             </button>
           </div>
         );
