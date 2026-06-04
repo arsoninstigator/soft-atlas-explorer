@@ -13,6 +13,7 @@ import LegalFilterPanel from "@/wandery/components/LegalFilterPanel";
 import type { TagKind } from "@/wandery/data/identity";
 import type { LegalSystem } from "@/wandery/data/legal";
 import { COUNTRY_PAGE } from "@/wandery/data/history";
+import { hasArchive } from "@/wandery/data/archive";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -171,6 +172,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
       {menu && (() => {
         const slug = COUNTRY_PAGE[menu.iso];
         const enabled = Boolean(slug);
+        const archiveEnabled = hasArchive(menu.iso);
         return (
           <div
             className="fixed z-[80] bg-card/95 backdrop-blur-xl border border-border/70 rounded-xl shadow-md py-1 min-w-[200px] animate-fade-in"
@@ -192,8 +194,12 @@ export default function Atlas({ region, labelOverrides }: Props) {
               open country map
             </button>
             <button
-              onClick={() => { setMenu(null); setPicked({ iso: menu.iso, name: menu.name }); }}
-              className="block w-full text-left px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              disabled={!archiveEnabled}
+              onClick={() => { if (archiveEnabled) { setMenu(null); nav(`/archive/${menu.iso}`); } }}
+              className={[
+                "block w-full text-left px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors",
+                archiveEnabled ? "text-foreground hover:bg-muted/60" : "text-muted-foreground/40 cursor-not-allowed",
+              ].join(" ")}
             >
               show archive entry
             </button>
