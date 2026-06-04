@@ -11,6 +11,7 @@ import Features from "@/wandery/pages/Features";
 import Roadmap from "@/wandery/pages/Roadmap";
 import Conflict from "@/wandery/pages/Conflict";
 import Conflicts from "@/wandery/pages/Conflicts";
+import Archive from "@/wandery/pages/Archive";
 import { useParams } from "react-router-dom";
 
 const ConflictRoute = () => {
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/country/newzealand" element={<Atlas region="newzealand" />} />
           <Route path="/conflicts" element={<Conflicts />} />
           <Route path="/conflict/:id" element={<ConflictRoute />} />
+          <Route path="/archive/:iso" element={<Archive />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />
