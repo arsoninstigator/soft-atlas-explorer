@@ -13,6 +13,13 @@ import Conflict from "@/wandery/pages/Conflict";
 import Conflicts from "@/wandery/pages/Conflicts";
 import Archive from "@/wandery/pages/Archive";
 import { useParams } from "react-router-dom";
+import HistoryIndex from "@/wandery/pages/history/HistoryIndex";
+import Wars from "@/wandery/pages/history/Wars";
+import WarDetail from "@/wandery/pages/history/WarDetail";
+import Trade from "@/wandery/pages/history/Trade";
+import TradeDetail from "@/wandery/pages/history/TradeDetail";
+import Attacks from "@/wandery/pages/history/Attacks";
+import AttackDetail from "@/wandery/pages/history/AttackDetail";
 
 const ConflictRoute = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +54,13 @@ const App = () => (
           <Route path="/conflicts" element={<Conflicts />} />
           <Route path="/conflict/:id" element={<ConflictRoute />} />
           <Route path="/archive/:iso" element={<Archive />} />
+          <Route path="/history" element={<HistoryIndex />} />
+          <Route path="/history/wars" element={<Wars />} />
+          <Route path="/history/wars/:id" element={<WarDetail />} />
+          <Route path="/history/trade" element={<Trade />} />
+          <Route path="/history/trade/:id" element={<TradeDetail />} />
+          <Route path="/history/attacks" element={<Attacks />} />
+          <Route path="/history/attacks/:id" element={<AttackDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />
