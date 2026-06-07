@@ -37,6 +37,12 @@ export const WARS: Record<string, WarDef> = {
       "U.S. entry in 1917 tipped the manpower balance on the Western Front.",
       "Ottoman defeat reshaped the Middle East via Sykes–Picot and the British Mandate.",
       "The Russian Empire collapsed mid-war into revolution and exit at Brest-Litovsk.",
+      "Russia switched out of the war in 1918 after the Bolshevik Revolution, signing the Treaty of Brest-Litovsk with the Central Powers.",
+      "Italy began the war allied with Germany and Austria-Hungary (Triple Alliance) but remained neutral in 1914 and joined the Allies in 1915 under the secret Treaty of London.",
+      "Romania initially stayed neutral, joined the Allies in 1916, was defeated and signed a separate peace in 1918, then re-entered on the Allied side at the war's end.",
+      "Bulgaria joined the Central Powers in 1915 after starting the war neutral.",
+      "Colonial participation: India, Canada, Australia, New Zealand and South Africa fought as part of the British Empire — not as independent belligerents. ~1.3 million Indians served under the British Indian Army; over 74,000 were killed.",
+      "French colonial troops (Senegalese tirailleurs, North and West African divisions, Indochinese) and the African and Pacific German colonies were also drawn in through imperial command, not independent declarations of war.",
     ],
   },
   ww2: {
@@ -56,6 +62,13 @@ export const WARS: Record<string, WarDef> = {
       "Axis included Nazi Germany, Fascist Italy and Imperial Japan; co-belligerents shifted (Italy switched sides in 1943).",
       "The Holocaust murdered six million Jews; the war killed an estimated 70–85 million people.",
       "Post-war, the United States, Soviet Union, UK, France and China became the UN Security Council's permanent members.",
+      "Soviet Union (Russia): signed the Molotov–Ribbentrop non-aggression pact with Germany in Aug 1939 and jointly invaded Poland. After Germany's surprise invasion (Operation Barbarossa, June 1941) the USSR joined the Allies and bore the largest share of European casualties (~27 million).",
+      "Italy: an Axis founding member; after Mussolini's fall and the 1943 armistice it co-belligerently joined the Allies while the German-backed Salò Republic fought on with the Axis.",
+      "Romania, Bulgaria, Hungary and Finland fought alongside the Axis but switched sides (or were occupied and switched) to the Allies in 1944.",
+      "Thailand declared war on the Allies under Japanese pressure in 1942; its Washington ambassador refused to deliver the declaration, and post-war the Allies treated Thailand as a defeated enemy in name only.",
+      "Colonial participation: India, the Crown Colonies of Africa, Burma, Malaya and the Caribbean fought as part of the British Empire — not as sovereign belligerents. ~2.5 million Indians served in the British Indian Army (the largest volunteer army in history); ~87,000 were killed.",
+      "Canada, Australia, New Zealand and South Africa entered the war as self-governing Dominions and declared war independently, though closely coordinated with London.",
+      "French colonial forces (North and West African, Indochinese) fought first for Vichy France and then for the Free French; Free French forces under de Gaulle operated from London and Brazzaville.",
     ],
   },
   cold_war: {
@@ -73,6 +86,14 @@ export const WARS: Record<string, WarDef> = {
     ],
     summary:
       "After 1945 the U.S. and the Soviet Union polarized the world. Direct war was avoided in Europe; proxy conflicts ran through Korea, Vietnam, Afghanistan, Angola, Central America and the Middle East. The Soviet bloc dissolved between 1989 and 1991.",
+    notes: [
+      "China: an Allied power under the Republic of China during WWII; after the 1949 Communist victory the PRC aligned with Moscow, then split from the USSR (Sino–Soviet split, 1960s) and re-aligned with the U.S. against Moscow from Nixon's 1972 visit onward.",
+      "Yugoslavia: communist but expelled from the Soviet bloc in 1948; co-founded the Non-Aligned Movement with India, Egypt, Indonesia and Ghana.",
+      "Egypt: shifted from Soviet client under Nasser to U.S. partner under Sadat after 1972, sealed by the 1979 peace treaty with Israel.",
+      "Iran: a U.S. ally under the Shah until the 1979 Islamic Revolution, after which it became hostile to both blocs.",
+      "Iraq: bought arms from both blocs; tilted Soviet under the Ba'ath, then received Western backing during the Iran–Iraq War.",
+      "Albania: broke with Moscow in 1961 and aligned briefly with Maoist China before isolating itself entirely.",
+    ],
   },
   korean: {
     id: "korean",
