@@ -25,7 +25,7 @@ export default function WarDetail() {
   }
 
   return (
-    <div className="h-screen w-screen relative overflow-hidden bg-background">
+    <div className="h-screen w-screen relative overflow-hidden bg-background lowercase">
       <div className="absolute inset-0">
         <HistoryMap sides={war.sides} />
       </div>
