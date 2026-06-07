@@ -90,8 +90,23 @@ export default function HistoryMap({ center = [25, 10], zoom = 2, sides, arrows,
     // attack pins
     if (attacks) {
       attacks.forEach(at => {
-        const m = L.circleMarker(at.pos, { radius: 9, color: "rgb(168,60,80)", fillColor: "rgb(220,90,110)", fillOpacity: 0.85, weight: 1.5 }).addTo(map);
-        m.bindTooltip(`<span class="wd-tt-name">${at.title}</span>`, { direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1 });
+        const color = `rgb(${at.color ?? "168 80 90"})`;
+        if (at.from) {
+          const line = L.polyline([at.from, at.pos], { color, weight: 2.4, opacity: 0.85, dashArray: "6 6" }).addTo(map);
+          overlays.current.push(line);
+          const origin = L.circleMarker(at.from, { radius: 4, color, fillColor: color, fillOpacity: 0.9, weight: 0 }).addTo(map);
+          overlays.current.push(origin);
+          if (at.fromLabel) {
+            const mid: [number, number] = [(at.from[0] + at.pos[0]) / 2, (at.from[1] + at.pos[1]) / 2];
+            const label = L.marker(mid, {
+              interactive: false,
+              icon: L.divIcon({ className: "wd-arrow-label", html: `<span style="background:rgba(255,255,255,0.78);padding:2px 6px;border-radius:6px;border:1px solid rgba(120,80,90,0.25);font-family:ui-monospace,SFMono-Regular,monospace;font-size:10px;letter-spacing:0.05em;color:#5a3a44;white-space:nowrap;">${at.fromLabel.toLowerCase()}</span>`, iconSize: [0, 0] }),
+            }).addTo(map);
+            overlays.current.push(label);
+          }
+        }
+        const m = L.circleMarker(at.pos, { radius: 9, color, fillColor: color, fillOpacity: 0.85, weight: 1.5 }).addTo(map);
+        m.bindTooltip(`<span class="wd-tt-name">${at.title.toLowerCase()}</span>`, { direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1 });
         overlays.current.push(m);
       });
     }

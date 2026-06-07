@@ -295,6 +295,9 @@ export interface AttackDef {
   blurb: string;
   summary: string;
   pos: [number, number];
+  from?: [number, number];
+  fromLabel?: string;
+  color?: string; // rgb triplet for arrow + pin
 }
 
 export const ATTACKS: Record<string, AttackDef> = {
@@ -307,6 +310,9 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "A surprise Japanese carrier-based attack on the U.S. Pacific Fleet killed 2,403 Americans, sank or damaged 19 ships and 300+ aircraft. The U.S. declared war on Japan the next day, entering WWII.",
     pos: [21.36, -157.95],
+    from: [40.0, 154.0],
+    fromLabel: "imperial japanese navy carrier strike force (kido butai)",
+    color: "188 92 96",
   },
   nine_eleven: {
     id: "nine_eleven",
@@ -317,6 +323,9 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "Nineteen al-Qaeda hijackers crashed four airliners into the World Trade Center, the Pentagon, and a Pennsylvania field. The U.S. invoked NATO Article 5, invaded Afghanistan, and reshaped global security, surveillance and air travel.",
     pos: [40.71, -74.01],
+    from: [42.36, -71.01],
+    fromLabel: "hijacked flights · boston · newark · dulles",
+    color: "168 80 90",
   },
   oct_7: {
     id: "oct_7",
@@ -327,6 +336,9 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "A coordinated assault by Hamas and allied factions killed ~1,200 people in Israel and took 251 hostages, triggering Israel's war in Gaza. The deadliest day for Jews since the Holocaust.",
     pos: [31.5, 34.5],
+    from: [31.45, 34.38],
+    fromLabel: "hamas-led incursion from gaza",
+    color: "168 80 90",
   },
   london_77: {
     id: "london_77",
@@ -337,6 +349,7 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "Four British Islamist suicide bombers attacked three Underground trains and a bus, killing 52 commuters and injuring 700+ — the deadliest terrorist attack on British soil.",
     pos: [51.51, -0.13],
+    color: "168 80 90",
   },
   mumbai: {
     id: "mumbai",
@@ -347,6 +360,9 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "Ten Pakistan-based militants from Lashkar-e-Taiba conducted a four-day siege of hotels, a railway station, a hospital and a Jewish centre, killing 175 people including 20 security personnel.",
     pos: [19.07, 72.87],
+    from: [24.86, 67.01],
+    fromLabel: "lashkar-e-taiba seaborne approach from karachi",
+    color: "168 80 90",
   },
   madrid: {
     id: "madrid",
@@ -357,5 +373,80 @@ export const ATTACKS: Record<string, AttackDef> = {
     summary:
       "Ten near-simultaneous bombings on Madrid commuter trains killed 193 people. The attack, claimed by al-Qaeda-inspired cells, reshaped Spain's election and ended its participation in the Iraq War.",
     pos: [40.41, -3.70],
+    color: "168 80 90",
+  },
+  hiroshima: {
+    id: "hiroshima",
+    title: "Atomic Bombing of Hiroshima",
+    date: "6 August 1945",
+    location: "Hiroshima, Japan",
+    blurb: "First wartime use of a nuclear weapon — 'Little Boy' dropped by the Enola Gay.",
+    summary:
+      "A U.S. B-29, the Enola Gay, flew from North Field on Tinian in the Mariana Islands and dropped a uranium gun-type weapon (‘Little Boy’) over Hiroshima at 08:15. An estimated 70,000–80,000 people died instantly; by year's end the toll had reached ~140,000.",
+    pos: [34.39, 132.45],
+    from: [14.99, 145.62],
+    fromLabel: "509th composite group · north field, tinian",
+    color: "200 110 90",
+  },
+  nagasaki: {
+    id: "nagasaki",
+    title: "Atomic Bombing of Nagasaki",
+    date: "9 August 1945",
+    location: "Nagasaki, Japan",
+    blurb: "Second nuclear strike — 'Fat Man' plutonium bomb, three days after Hiroshima.",
+    summary:
+      "Bockscar, another B-29 from Tinian, dropped the plutonium implosion bomb ‘Fat Man’ on Nagasaki at 11:02 after diverting from Kokura. Roughly 40,000 people were killed instantly, with the toll rising to ~74,000 by year's end. Japan announced surrender on 15 August.",
+    pos: [32.77, 129.86],
+    from: [14.99, 145.62],
+    fromLabel: "509th composite group · north field, tinian",
+    color: "200 110 90",
+  },
+  tokyo_firebombing: {
+    id: "tokyo_firebombing",
+    title: "Firebombing of Tokyo (Operation Meetinghouse)",
+    date: "9 – 10 March 1945",
+    location: "Tokyo, Japan",
+    blurb: "U.S. Army Air Forces low-altitude incendiary raid on Tokyo.",
+    summary:
+      "Roughly 300 B-29s from the Mariana Islands dropped ~1,665 tons of incendiaries on Tokyo's wooden districts, killing an estimated 100,000 people in a single night and leaving over a million homeless — the deadliest conventional air raid in history.",
+    pos: [35.68, 139.69],
+    from: [14.99, 145.62],
+    fromLabel: "xxi bomber command · marianas",
+    color: "200 110 90",
+  },
+  dresden: {
+    id: "dresden",
+    title: "Bombing of Dresden",
+    date: "13 – 15 February 1945",
+    location: "Dresden, Germany",
+    blurb: "RAF Bomber Command and USAAF firebombing of Dresden.",
+    summary:
+      "Over four raids, 722 RAF heavy bombers and 527 U.S. heavy bombers dropped more than 3,900 tons of high-explosive and incendiary bombs on Dresden, creating a firestorm that killed an estimated 25,000 people and destroyed the historic city centre.",
+    pos: [51.05, 13.74],
+    from: [52.21, 0.10],
+    fromLabel: "raf bomber command · east anglia",
+    color: "200 110 90",
+  },
+  paris_2015: {
+    id: "paris_2015",
+    title: "November 2015 Paris Attacks",
+    date: "13 November 2015",
+    location: "Paris, France",
+    blurb: "Coordinated ISIS gun and bomb attacks across Paris.",
+    summary:
+      "Three coordinated teams of ISIS attackers struck the Stade de France, cafés in the 10th and 11th arrondissements and the Bataclan concert hall, killing 130 people and wounding 416 — the deadliest attack on French soil since WWII.",
+    pos: [48.86, 2.35],
+    color: "168 80 90",
+  },
+  beirut_1983: {
+    id: "beirut_1983",
+    title: "Beirut Barracks Bombing",
+    date: "23 October 1983",
+    location: "Beirut, Lebanon",
+    blurb: "Suicide truck bombings of U.S. Marine and French paratrooper barracks.",
+    summary:
+      "Two near-simultaneous suicide truck bombings, attributed to Hezbollah, killed 241 U.S. Marines and 58 French paratroopers stationed with the multinational force in Lebanon. The attack prompted U.S. withdrawal within months.",
+    pos: [33.82, 35.49],
+    color: "168 80 90",
   },
 };

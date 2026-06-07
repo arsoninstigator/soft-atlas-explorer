@@ -25,7 +25,7 @@ export default function TradeDetail() {
   }
 
   return (
-    <div className="h-screen w-screen relative overflow-hidden bg-background">
+    <div className="h-screen w-screen relative overflow-hidden bg-background lowercase">
       <div className="absolute inset-0">
         <HistoryMap arrows={trade.arrows} center={[20, -20]} zoom={3} />
       </div>

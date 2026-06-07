@@ -12,7 +12,7 @@ export default function Attacks() {
 
   const list = Object.values(ATTACKS);
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground lowercase">
       <header className="max-w-[1100px] mx-auto px-6 pt-12 pb-8">
         <Link to="/history" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
           ← history
