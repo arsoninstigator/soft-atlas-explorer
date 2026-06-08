@@ -17,7 +17,7 @@ export default function WarDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <div className="text-center">
-          <p className="font-serif italic text-2xl">war not found</p>
+          <p className="font-serif text-2xl">war not found</p>
           <Link to="/history/wars" className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground">← wars</Link>
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function WarDetail() {
         <Link to="/history/wars" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
           ← wars
         </Link>
-        <h1 className="mt-3 font-serif italic text-[28px] leading-tight text-foreground/90">{war.title}</h1>
+        <h1 className="mt-3 font-serif text-[28px] leading-tight text-foreground/90">{war.title}</h1>
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{war.years}</div>
         <p className="mt-3 text-[13px] leading-relaxed text-foreground/85">{war.summary}</p>
 

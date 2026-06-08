@@ -17,7 +17,7 @@ export default function AttackDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <div className="text-center">
-          <p className="font-serif italic text-2xl">attack not found</p>
+          <p className="font-serif text-2xl">attack not found</p>
           <Link to="/history/attacks" className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground">← attacks</Link>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function AttackDetail() {
         <Link to="/history/attacks" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
           ← attacks
         </Link>
-        <h1 className="mt-3 font-serif italic text-[26px] leading-tight text-foreground/90">{a.title}</h1>
+        <h1 className="mt-3 font-serif text-[26px] leading-tight text-foreground/90">{a.title}</h1>
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{a.date}</div>
         <div className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{a.location}</div>
         <p className="mt-3 text-[13px] leading-relaxed text-foreground/85">{a.summary}</p>

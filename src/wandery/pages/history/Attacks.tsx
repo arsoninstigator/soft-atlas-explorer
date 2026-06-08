@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import HistoryMap from "@/wandery/components/HistoryMap";
 import { ATTACKS } from "@/wandery/data/history-events";
+import HistoryListFilters, { parseYear, type SortDir } from "@/wandery/components/HistoryListFilters";
 
 export default function Attacks() {
   useEffect(() => {
@@ -10,17 +11,49 @@ export default function Attacks() {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const list = Object.values(ATTACKS);
+  const all = useMemo(() => Object.values(ATTACKS), []);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [sort, setSort] = useState<SortDir>("none");
+
+  const allLocations = useMemo(() => {
+    const set = new Set<string>();
+    all.forEach(a => a.location.split(/[·,]/).forEach(s => {
+      const t = s.trim();
+      if (t) set.add(t);
+    }));
+    return Array.from(set).sort();
+  }, [all]);
+
+  const list = useMemo(() => {
+    let l = all;
+    if (selected.length > 0) {
+      l = l.filter(a => selected.every(loc => a.location.toLowerCase().includes(loc.toLowerCase())));
+    }
+    if (sort !== "none") {
+      l = [...l].sort((a, b) => {
+        const ya = parseYear(a.date) ?? 0;
+        const yb = parseYear(b.date) ?? 0;
+        return sort === "asc" ? ya - yb : yb - ya;
+      });
+    }
+    return l;
+  }, [all, selected, sort]);
+
   return (
     <div className="min-h-screen bg-background text-foreground lowercase">
       <header className="max-w-[1100px] mx-auto px-6 pt-12 pb-8">
         <Link to="/history" className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors">
           ← history
         </Link>
-        <h1 className="mt-6 font-serif italic text-[44px] leading-none text-foreground/90">major attacks</h1>
-        <p className="mt-3 max-w-[640px] text-[13px] leading-relaxed text-muted-foreground italic">
-          pinpointed strikes that reshaped global politics — from pearl harbor to october 7.
-        </p>
+        <div className="mt-6 flex items-start justify-between gap-6">
+          <div>
+            <h1 className="font-serif text-[44px] leading-none text-foreground/90">major attacks</h1>
+            <p className="mt-3 max-w-[640px] text-[13px] leading-relaxed text-muted-foreground italic">
+              pinpointed strikes that reshaped global politics — from pearl harbor to october 7.
+            </p>
+          </div>
+          <HistoryListFilters countries={allLocations} selected={selected} onSelected={setSelected} sort={sort} onSort={setSort} />
+        </div>
       </header>
 
       <section className="max-w-[1100px] mx-auto px-6">
@@ -38,7 +71,7 @@ export default function Attacks() {
               className="block rounded-2xl border border-border/70 bg-card p-5 transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-foreground/30"
             >
               <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground/80">/history/attacks/{a.id}</div>
-              <div className="mt-2 font-serif italic text-[22px] leading-tight text-foreground/90">{a.title}</div>
+              <div className="mt-2 font-serif text-[22px] leading-tight text-foreground/90">{a.title}</div>
               <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{a.date} · {a.location}</div>
               <p className="mt-2 text-[12px] leading-snug italic text-muted-foreground">{a.blurb}</p>
             </Link>
