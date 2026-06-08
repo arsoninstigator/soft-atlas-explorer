@@ -20,6 +20,8 @@ import Trade from "@/wandery/pages/history/Trade";
 import TradeDetail from "@/wandery/pages/history/TradeDetail";
 import Attacks from "@/wandery/pages/history/Attacks";
 import AttackDetail from "@/wandery/pages/history/AttackDetail";
+import Events from "@/wandery/pages/history/Events";
+import EventDetail from "@/wandery/pages/history/EventDetail";
 
 const ConflictRoute = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +63,8 @@ const App = () => (
           <Route path="/history/trade/:id" element={<TradeDetail />} />
           <Route path="/history/attacks" element={<Attacks />} />
           <Route path="/history/attacks/:id" element={<AttackDetail />} />
+          <Route path="/history/events" element={<Events />} />
+          <Route path="/history/events/:id" element={<EventDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/features" element={<Features />} />
