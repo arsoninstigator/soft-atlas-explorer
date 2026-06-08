@@ -25,6 +25,7 @@ const BRICS = s(["BRA","RUS","IND","CHN","ZAF","IRN","EGY","ETH","ARE"]);
 const ISLANDS = s(["ISL","IRL","GBR","JPN","PHL","IDN","NZL","CUB","JAM","HTI","DOM","MDG","LKA","TWN","CYP","MLT","FJI","PNG","SLB","VUT","WSM","TON","KIR","MHL","FSM","PLW","NRU","TUV","COM","MUS","SYC","CPV","STP","BHS","BRB","TTO","GRD","LCA","VCT","ATG","DMA","KNA"]);
 const LANDLOCKED = s(["AFG","AND","ARM","AUT","AZE","BLR","BTN","BOL","BWA","BFA","BDI","CAF","TCD","CZE","SWZ","ETH","HUN","KAZ","KGZ","LAO","LSO","LIE","LUX","MKD","MWI","MLI","MDA","MNG","NPL","NER","PRY","RWA","SMR","SRB","SVK","SSS","SSD","CHE","TJK","UGA","UZB","VAT","ZMB","ZWE"]);
 const ARAB = s(["DZA","BHR","COM","DJI","EGY","IRQ","JOR","KWT","LBN","LBY","MRT","MAR","OMN","PSE","QAT","SAU","SOM","SDN","SYR","TUN","ARE","YEM"]);
+const HORN_OF_AFRICA = s(["DJI","ERI","ETH","SOM"]);
 const FRANCOPHONE = s(["FRA","BEL","CHE","LUX","MCO","CAN","HTI","SEN","CIV","BFA","MLI","NER","TCD","CAF","COG","COD","GAB","GIN","BEN","TGO","CMR","MDG","DJI","COM","RWA","BDI","MRT","DZA","MAR","TUN","VUT"]);
 const POST_SOVIET = s(["RUS","UKR","BLR","MDA","EST","LVA","LTU","ARM","AZE","GEO","KAZ","KGZ","TJK","TKM","UZB"]);
 const NORDIC = s(["DNK","FIN","ISL","NOR","SWE"]);
@@ -66,6 +67,7 @@ export const FILTERS: Record<FilterId, FilterDef> = {
   caucasus:      { id:"caucasus",      label:"#caucasus",      color:"186 152 142", countries: CAUCASUS },
   formeryugoslavia:{ id:"formeryugoslavia", label:"#formeryugoslavia", color:"196 140 124", countries: YUGOSLAVIA },
   mediterranean: { id:"mediterranean", label:"#mediterranean", color:"176 164 122", countries: MEDITERRANEAN },
+  hornofafrica:  { id:"hornofafrica",  label:"#hornofafrica",  color:"186 142 110", countries: HORN_OF_AFRICA },
 };
 
 export const WORLD_FILTERS: FilterId[] = [
@@ -80,7 +82,7 @@ export const EUROPE_FILTERS: FilterId[] = [
 
 export function filtersFor(region: string): FilterId[] {
   if (region === "europe") return EUROPE_FILTERS;
-  if (region === "africa") return ["arabworld","francophone","commonwealth","mediterranean","globalsouth","islandnations","landlocked"];
+  if (region === "africa") return ["arabworld","hornofafrica","francophone","commonwealth","mediterranean","globalsouth","islandnations","landlocked"];
   if (region === "asia") return ["postsoviet","arabworld","brics","g20","islandnations","commonwealth","landlocked"];
   if (region === "america") return ["nato","anglosphere","democracies","g20","brics","globalsouth","islandnations","commonwealth"];
   if (region === "northamerica") return ["nato","anglosphere","democracies","g20","commonwealth","francophone"];
