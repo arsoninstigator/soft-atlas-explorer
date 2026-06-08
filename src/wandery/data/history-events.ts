@@ -635,3 +635,161 @@ export const ATTACKS: Record<string, AttackDef> = {
     color: "168 80 90",
   },
 };
+
+// ── MAJOR ERAS / EVENTS ─────────────────────────────────────────────────────
+
+export interface EraDef {
+  id: string;
+  title: string;
+  years: string;
+  blurb: string;
+  summary: string;
+  regions: string[];   // descriptive labels (not iso)
+  countries?: string[]; // iso codes for filter
+  notes?: string[];
+}
+
+export const MAJOR_EVENTS: Record<string, EraDef> = {
+  nazi_germany: {
+    id: "nazi_germany",
+    title: "Nazi Germany Era",
+    years: "1933 – 1945",
+    blurb: "The Third Reich — from the Enabling Act to unconditional surrender.",
+    summary:
+      "Adolf Hitler's NSDAP took power in January 1933 and over twelve years built a totalitarian state, rearmed Germany in violation of Versailles, annexed Austria and Czechoslovakia, launched the Second World War in 1939 and perpetrated the Holocaust, the industrialised murder of six million Jews and millions of others. The regime ended with Berlin's fall and Hitler's suicide in April 1945.",
+    regions: ["central europe", "europe", "north africa", "soviet union"],
+    countries: ["DEU","AUT","POL","CZE","FRA","NLD","BEL","NOR","DNK","RUS","UKR","BLR","HUN","HRV","ITA","GRC","YUG"],
+    notes: [
+      "1933: Enabling Act consolidates dictatorship.",
+      "1935: Nuremberg Laws strip Jews of citizenship.",
+      "1938: Anschluss with Austria; Kristallnacht.",
+      "1939: invasion of Poland triggers WWII.",
+      "1941–1945: the Holocaust; six million Jews murdered.",
+      "April 1945: Hitler dies in the Berlin bunker; Germany surrenders unconditionally on 8 May.",
+    ],
+  },
+  british_raj: {
+    id: "british_raj",
+    title: "British Raj",
+    years: "1858 – 1947",
+    blurb: "Direct British Crown rule over the Indian subcontinent.",
+    summary:
+      "After the 1857 rebellion the British Crown dissolved the East India Company and assumed direct rule over present-day India, Pakistan, Bangladesh and Myanmar. The Raj built railways, codified law, conducted famine policy that killed millions, drafted ~2.5M Indian soldiers in WWII, and ended with the bloody Partition of 1947, displacing 15 million people and killing up to two million.",
+    regions: ["south asia"],
+    countries: ["IND","PAK","BGD","MMR","LKA","NPL","GBR"],
+    notes: [
+      "1858: Crown takes over from the East India Company.",
+      "1876: Queen Victoria proclaimed Empress of India.",
+      "1885: Indian National Congress founded.",
+      "1919: Jallianwala Bagh massacre at Amritsar.",
+      "1943: Bengal famine, ~3 million dead.",
+      "1947: Partition into India and Pakistan; ~1–2M killed, 15M displaced.",
+    ],
+  },
+  soviet_union: {
+    id: "soviet_union",
+    title: "Soviet Union",
+    years: "1922 – 1991",
+    blurb: "The world's first and largest communist state.",
+    summary:
+      "Born from the 1917 Bolshevik Revolution and formally constituted in 1922, the USSR industrialised under Stalin at catastrophic human cost, lost ~27 million people defeating Nazi Germany, built the Eastern Bloc, raced the United States to the Moon, and dissolved in December 1991 into fifteen successor republics.",
+    regions: ["eastern europe", "central asia", "caucasus"],
+    countries: ["RUS","UKR","BLR","KAZ","UZB","TJK","KGZ","TKM","ARM","AZE","GEO","MDA","LTU","LVA","EST"],
+    notes: [
+      "1917: October Revolution.",
+      "1922: USSR formally constituted.",
+      "1932–33: Holodomor in Ukraine; ~3.5M deaths.",
+      "1939: Molotov–Ribbentrop pact with Nazi Germany.",
+      "1941–45: Great Patriotic War, ~27M Soviet dead.",
+      "1957: Sputnik. 1961: Gagarin.",
+      "1991: Dissolution into 15 republics.",
+    ],
+  },
+  ottoman_empire: {
+    id: "ottoman_empire",
+    title: "Ottoman Empire",
+    years: "1299 – 1922",
+    blurb: "Six centuries from the Anatolian frontier to the gates of Vienna.",
+    summary:
+      "Founded by Osman I in 1299, the Ottoman Empire took Constantinople in 1453, reached its zenith under Suleiman the Magnificent and at its height ruled the Balkans, Anatolia, the Levant, Mesopotamia, Egypt and most of North Africa. Defeat in WWI and the Turkish War of Independence ended the empire and produced the modern Republic of Turkey.",
+    regions: ["anatolia", "balkans", "levant", "north africa", "arabia"],
+    countries: ["TUR","GRC","BGR","SRB","BIH","MKD","ALB","EGY","SYR","LBN","JOR","ISR","PSE","IRQ","SAU","YEM","LBY","TUN","DZA"],
+    notes: [
+      "1453: fall of Constantinople.",
+      "1529 & 1683: failed sieges of Vienna.",
+      "1915–23: Armenian Genocide; ~1.5M dead.",
+      "1918: Mudros Armistice ends Ottoman participation in WWI.",
+      "1922: sultanate abolished; 1923 Republic of Turkey declared.",
+    ],
+  },
+  cold_war_era: {
+    id: "cold_war_era",
+    title: "Cold War Era",
+    years: "1947 – 1991",
+    blurb: "Bipolar world order between Washington and Moscow.",
+    summary:
+      "From the Truman Doctrine to the Soviet collapse, the world organised itself around two nuclear-armed superpowers. NATO and the Warsaw Pact divided Europe; proxy wars ran through Korea, Vietnam, Afghanistan, Angola, Nicaragua and the Middle East. The era ended bloodlessly in Europe with the fall of the Berlin Wall (1989) and the dissolution of the USSR (1991).",
+    regions: ["global"],
+    countries: ["USA","RUS","GBR","FRA","DEU","CUB","VNM","KOR","PRK","CHN","AFG","AGO","NIC","EGY","ISR"],
+    notes: [
+      "1947: Truman Doctrine.",
+      "1949: NATO founded; USSR tests nuclear bomb.",
+      "1955: Warsaw Pact founded.",
+      "1962: Cuban Missile Crisis.",
+      "1989: Berlin Wall falls.",
+      "1991: USSR dissolved.",
+    ],
+  },
+  decolonization: {
+    id: "decolonization",
+    title: "Decolonization",
+    years: "1945 – 1975",
+    blurb: "Dismantling of the European colonial empires.",
+    summary:
+      "In the three decades after WWII, the British, French, Dutch, Belgian and Portuguese empires unravelled. Over a hundred new sovereign states joined the United Nations between 1945 and 1980. The process was peaceful in some cases (Ghana 1957) and violent in others (Indochina, Algeria, Kenya, Angola).",
+    regions: ["africa", "south asia", "southeast asia", "caribbean"],
+    countries: ["IND","PAK","IDN","VNM","DZA","KEN","GHA","NGA","ZAF","ZWE","MOZ","AGO","COD","MYS","SGP"],
+    notes: [
+      "1947: Partition of India.",
+      "1954: French defeat at Dien Bien Phu; 1962 Algerian independence.",
+      "1957: Ghana — first sub-Saharan independence.",
+      "1960: 'Year of Africa' — 17 states independent.",
+      "1975: Portuguese empire collapses (Angola, Mozambique, East Timor).",
+    ],
+  },
+  meiji_era: {
+    id: "meiji_era",
+    title: "Meiji Era",
+    years: "1868 – 1912",
+    blurb: "Japan's industrial revolution and emergence as a great power.",
+    summary:
+      "The Meiji Restoration ended Tokugawa rule and the policy of national seclusion. In forty-four years Japan adopted a constitution, built railways and a modern navy, defeated Qing China (1895) and Imperial Russia (1905), annexed Taiwan and Korea, and became the first non-Western great power of the industrial age.",
+    regions: ["east asia"],
+    countries: ["JPN","KOR","CHN","TWN","RUS"],
+    notes: [
+      "1868: Meiji Restoration.",
+      "1889: Meiji Constitution.",
+      "1894–95: First Sino-Japanese War; Taiwan annexed.",
+      "1904–05: Russo-Japanese War; first Asian victory over a European power.",
+      "1910: annexation of Korea.",
+    ],
+  },
+  pax_americana: {
+    id: "pax_americana",
+    title: "Pax Americana",
+    years: "1945 – present",
+    blurb: "U.S.-led liberal international order after WWII.",
+    summary:
+      "After 1945 the United States built and underwrote a global order: the UN, IMF, World Bank, GATT/WTO, NATO, the dollar as reserve currency, forward bases on every continent. Challenged by the USSR until 1991, by Islamist terror after 9/11, and by China's rise since the 2000s.",
+    regions: ["global"],
+    countries: ["USA","GBR","FRA","DEU","JPN","KOR","ISR","CAN","AUS","SAU"],
+    notes: [
+      "1944: Bretton Woods system.",
+      "1948: Marshall Plan.",
+      "1949: NATO.",
+      "1991: 'unipolar moment' after USSR collapse.",
+      "2001+: Global War on Terror reshapes posture.",
+    ],
+  },
+};
+
