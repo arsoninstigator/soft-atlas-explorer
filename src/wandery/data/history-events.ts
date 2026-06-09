@@ -1179,5 +1179,115 @@ export const MAJOR_EVENTS: Record<string, EraDef> = {
       "2001+: Global War on Terror reshapes posture.",
     ],
   },
+  qing_dynasty: {
+    id: "qing_dynasty",
+    title: "Qing Dynasty",
+    years: "1644 – 1912",
+    blurb: "China's last imperial dynasty — from Manchu conquest to the Republic.",
+    summary:
+      "The Manchu Qing took Beijing in 1644 and built the largest Chinese empire in history, doubling territory to include Mongolia, Tibet, Xinjiang and Taiwan. After 1840 it was hollowed out by the Opium Wars, the Taiping Rebellion (~20–30M dead), the unequal treaties and the 1911 revolution. The boy-emperor Puyi abdicated in 1912.",
+    regions: ["east asia"],
+    countries: ["CHN","MNG","TWN","RUS"],
+    notes: [
+      "1644: Manchu conquest of Beijing.",
+      "1839–60: Opium Wars; Hong Kong ceded.",
+      "1850–64: Taiping Rebellion; ~20–30M dead.",
+      "1900: Boxer Rebellion; eight-nation alliance occupies Beijing.",
+      "1911–12: Xinhai Revolution; Republic of China proclaimed.",
+    ],
+  },
+  mughal_empire: {
+    id: "mughal_empire",
+    title: "Mughal Empire",
+    years: "1526 – 1857",
+    blurb: "Turco-Mongol empire that ruled most of the Indian subcontinent.",
+    summary:
+      "Founded by Babur after the Battle of Panipat, the Mughals reached their zenith under Akbar and Aurangzeb, ruling ~150 million people and producing the Taj Mahal, Red Fort and a syncretic Indo-Persian high culture. After 1707 the empire fragmented; the East India Company became paramount in 1757 (Plassey) and the British exiled the last emperor in 1858.",
+    regions: ["south asia"],
+    countries: ["IND","PAK","BGD","AFG"],
+  },
+  french_revolution: {
+    id: "french_revolution",
+    title: "French Revolution",
+    years: "1789 – 1799",
+    blurb: "Storming of the Bastille to Napoleon's coup.",
+    summary:
+      "A fiscal crisis and Enlightenment ideas toppled the Bourbon monarchy. The Revolution proclaimed the Rights of Man, executed Louis XVI and Marie Antoinette, fought off the First Coalition, descended into the Terror under Robespierre, and ended with Napoleon's 18 Brumaire coup. It rewrote European politics, exporting nationalism and the metric system.",
+    regions: ["europe"],
+    countries: ["FRA","GBR","AUT","PRT","ESP","DEU","RUS"],
+    notes: [
+      "1789: Bastille; Declaration of the Rights of Man.",
+      "1793: Louis XVI executed; Reign of Terror.",
+      "1794: Thermidorian Reaction; Robespierre executed.",
+      "1799: Napoleon's coup ends the revolutionary republic.",
+    ],
+  },
+  industrial_revolution: {
+    id: "industrial_revolution",
+    title: "Industrial Revolution",
+    years: "c. 1760 – 1900",
+    blurb: "Steam, coal and the factory remake the world economy.",
+    summary:
+      "Beginning in Britain with textiles, steam engines and ironworks, the Industrial Revolution moved through Belgium, France, Germany and the United States, then Japan. World per-capita output roughly quadrupled in a century. It produced the modern industrial city, the working class, the railway and global energy demand.",
+    regions: ["europe", "north america", "east asia"],
+    countries: ["GBR","DEU","FRA","BEL","USA","JPN"],
+  },
+  scramble_for_africa: {
+    id: "scramble_for_africa",
+    title: "Scramble for Africa",
+    years: "1881 – 1914",
+    blurb: "European partition of Africa formalised at the Berlin Conference.",
+    summary:
+      "Between 1881 and 1914 European powers (chiefly Britain, France, Germany, Belgium, Portugal and Italy) seized ~90% of African territory. The 1884–85 Berlin Conference set the ground rules without African participation. King Leopold II's Congo Free State alone killed an estimated 10 million people. The borders drawn then remain Africa's borders today.",
+    regions: ["africa"],
+    countries: ["GBR","FRA","DEU","BEL","PRT","ITA","ESP","COD","NGA","KEN","ZAF","DZA"],
+  },
+  arab_spring: {
+    id: "arab_spring",
+    title: "Arab Spring",
+    years: "2010 – 2012",
+    blurb: "Wave of uprisings across the Arab world.",
+    summary:
+      "Triggered by Tunisian street vendor Mohamed Bouazizi's self-immolation, mass protests toppled the leaders of Tunisia, Egypt, Libya and Yemen and ignited the Syrian civil war. Only Tunisia produced a sustained democratic transition; counter-revolution returned in Egypt (2013) and civil wars consumed Libya, Yemen and Syria.",
+    regions: ["mena", "north africa"],
+    countries: ["TUN","EGY","LBY","SYR","YEM","BHR","JOR"],
+    notes: [
+      "Dec 2010: Mohamed Bouazizi self-immolates in Tunisia.",
+      "Jan 2011: Ben Ali flees Tunisia.",
+      "Feb 2011: Mubarak resigns in Egypt.",
+      "Oct 2011: Gaddafi killed in Libya.",
+      "2011+: Syrian civil war begins.",
+    ],
+  },
+  apartheid: {
+    id: "apartheid",
+    title: "Apartheid South Africa",
+    years: "1948 – 1994",
+    blurb: "Institutionalised racial segregation under the National Party.",
+    summary:
+      "After the 1948 election, South Africa's National Party built a legal system of racial classification, forced removals (3.5M people), bantustans and disenfranchisement of the Black majority. International sanctions, internal resistance led by the ANC, and the fall of the Soviet bloc combined to force F.W. de Klerk to release Nelson Mandela in 1990. Apartheid ended with the 1994 multiracial elections.",
+    regions: ["southern africa"],
+    countries: ["ZAF","NAM","BWA","ZWE"],
+  },
+  globalization_china: {
+    id: "globalization_china",
+    title: "China's Reform and Opening",
+    years: "1978 – present",
+    blurb: "Deng Xiaoping's reforms transform China into the world's second economy.",
+    summary:
+      "Deng Xiaoping's 1978 reforms — household responsibility in agriculture, special economic zones, foreign investment — lifted ~800 million Chinese out of poverty and made China the world's manufacturing hub. WTO accession (2001) integrated China into the global trading system; the Belt and Road Initiative (2013) projected economic statecraft globally. China's GDP overtook Japan in 2010 to become the world's second-largest.",
+    regions: ["east asia", "global"],
+    countries: ["CHN","USA","JPN","KOR","TWN"],
+  },
+  partition_india: {
+    id: "partition_india",
+    title: "Partition of India",
+    years: "1947",
+    blurb: "British India split into India and Pakistan along religious lines.",
+    summary:
+      "The Radcliffe Line, drawn in five weeks by a barrister who had never visited India, divided British India into a Hindu-majority India and a Muslim-majority Pakistan (east and west wings). Up to two million people were killed in communal violence and ~15 million were displaced — the largest mass migration in human history. The partition's wounds underwrote four India–Pakistan wars and the Kashmir dispute.",
+    regions: ["south asia"],
+    countries: ["IND","PAK","BGD","GBR"],
+  },
 };
 
