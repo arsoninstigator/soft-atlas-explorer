@@ -483,6 +483,77 @@ export const TRADES: Record<string, TradeDef> = {
       { from: [-6, 106], to: [-3, 128], label: "→ Spice Islands", color: "90 110 140" },
     ],
   },
+  opium: {
+    id: "opium",
+    title: "Opium Trade (British East India Co. → Qing China)",
+    years: "c. 1773 – 1860",
+    blurb: "British-grown Bengal opium shipped into Qing China to balance the tea trade.",
+    summary:
+      "To reverse Britain's silver outflow from buying Chinese tea, the East India Company cultivated opium in Bengal and Bihar and smuggled it through Canton via country traders. By the 1830s ~30,000 chests a year were flowing in, creating mass addiction and a reverse silver drain. Qing attempts to suppress the trade triggered the two Opium Wars (1839–42, 1856–60), forced cession of Hong Kong and the 'unequal treaties'.",
+    arrows: [
+      { from: [25, 87], to: [22, 113], label: "bengal opium → canton", color: "140 90 70" },
+      { from: [22, 113], to: [22, 114], label: "→ hong kong (post-1842)", color: "140 90 70" },
+      { from: [30, 121], to: [51, 0], label: "tea & silk → london", color: "120 80 90" },
+    ],
+    notes: [
+      "First Opium War (1839–42): Treaty of Nanjing ceded Hong Kong Island.",
+      "Second Opium War (1856–60): Anglo-French force burned the Old Summer Palace.",
+      "By 1880 China produced more opium domestically than it imported.",
+    ],
+  },
+  trans_saharan: {
+    id: "trans_saharan",
+    title: "Trans-Saharan Trade",
+    years: "c. 700 – 1600",
+    blurb: "Gold, salt and enslaved people across the Sahara between West Africa and the Mediterranean.",
+    summary:
+      "Camel caravans linked the empires of Ghana, Mali and Songhai with North Africa and the Mediterranean world. West African gold (Bambuk, Bure, Akan) funded the Almoravid, Almohad and Mamluk states; Saharan salt from Taghaza moved south; an estimated 6–10 million enslaved Africans were taken north over nine centuries.",
+    arrows: [
+      { from: [13, -8], to: [31, -8], label: "gold, ivory →", color: "150 120 60" },
+      { from: [31, -8], to: [36, -5], label: "→ marrakesh, fez", color: "150 120 60" },
+      { from: [22, -3], to: [16, -2], label: "← saharan salt (taghaza)", color: "120 80 90" },
+      { from: [13, -8], to: [30, 31], label: "enslaved africans → cairo", color: "168 80 90" },
+    ],
+  },
+  indian_ocean: {
+    id: "indian_ocean",
+    title: "Indian Ocean Trade Network",
+    years: "c. 200 BCE – 1500 CE",
+    blurb: "Monsoon-driven exchange between East Africa, Arabia, India, Southeast Asia and China.",
+    summary:
+      "Long before European arrival, monsoon winds powered a thousand-year exchange of textiles, spices, gold, ivory, porcelain and ideas linking Swahili coast city-states, Oman and Yemen, Gujarat and the Malabar, Sri Lanka, Sumatra and southern China. Islam, Hinduism and Buddhism spread along these routes.",
+    arrows: [
+      { from: [-6, 39], to: [12, 45], label: "ivory, gold → arabia", color: "120 90 60" },
+      { from: [12, 45], to: [10, 76], label: "→ malabar coast", color: "120 90 60" },
+      { from: [10, 76], to: [6, 80], label: "→ ceylon", color: "120 90 60" },
+      { from: [6, 80], to: [22, 113], label: "→ canton", color: "120 90 60" },
+    ],
+  },
+  columbian_exchange: {
+    id: "columbian_exchange",
+    title: "Columbian Exchange",
+    years: "1492 – 1700s",
+    blurb: "Transatlantic exchange of crops, animals, people and disease after Columbus.",
+    summary:
+      "The contact of 1492 transferred maize, potatoes, tomatoes, tobacco and cacao east; wheat, sugar, cattle, horses, and lethal pathogens (smallpox, measles) west. Old World diseases killed an estimated 56 million Indigenous Americans — roughly 90% of the pre-contact population — within 150 years. The exchange remade global agriculture, demographics and ecology.",
+    arrows: [
+      { from: [10, -75], to: [40, -10], label: "maize, potato, tobacco →", color: "120 90 60" },
+      { from: [40, -10], to: [15, -75], label: "← wheat, sugar, horses, smallpox", color: "168 80 90" },
+    ],
+  },
+  trans_pacific_galleon: {
+    id: "trans_pacific_galleon",
+    title: "Manila Galleon Trade",
+    years: "1565 – 1815",
+    blurb: "Spanish silver from Acapulco for Chinese silk via Manila.",
+    summary:
+      "For 250 years Spanish galleons sailed annually between Acapulco and Manila, exchanging Mexican and Peruvian silver (from Potosí and Zacatecas) for Chinese silk, porcelain and spices. The route monetised Ming and Qing China on silver and made Manila the first truly Pacific commercial hub.",
+    arrows: [
+      { from: [17, -100], to: [14, 121], label: "acapulco → manila (silver)", color: "120 90 60" },
+      { from: [14, 121], to: [17, -100], label: "manila → acapulco (silk, porcelain)", color: "120 80 90" },
+      { from: [14, 121], to: [22, 113], label: "→ canton (silver)", color: "120 90 60" },
+    ],
+  },
 };
 
 // ── MAJOR ATTACKS ───────────────────────────────────────────────────────────
