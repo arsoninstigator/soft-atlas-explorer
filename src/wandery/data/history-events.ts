@@ -235,6 +235,185 @@ export const WARS: Record<string, WarDef> = {
     summary:
       "Russia annexed Crimea in 2014 and launched a full-scale invasion of Ukraine on 24 Feb 2022. NATO members, while not co-belligerent, have provided sustained military and financial support to Ukraine.",
   },
+  napoleonic: {
+    id: "napoleonic",
+    title: "Napoleonic Wars",
+    years: "1803 – 1815",
+    blurb: "Napoleon's France against successive European coalitions.",
+    sides: [
+      { id: "france", label: "First French Empire & allies", color: "82 120 178", outcome: "defeated",
+        members: ["FRA","ESP","ITA","NLD","POL","DNK","NOR"] },
+      { id: "coalition", label: "Coalition powers", color: "188 92 96", outcome: "victor",
+        members: ["GBR","RUS","AUT","PRT","SWE","DEU"] },
+    ],
+    summary:
+      "Seven coalitions of European powers fought Napoleonic France for over a decade across Europe, Egypt and the Atlantic. The Russian campaign of 1812 destroyed the Grande Armée; defeat at Leipzig (1813) and Waterloo (1815) ended Napoleon's empire and produced the conservative Concert of Europe.",
+    notes: [
+      "Spain, Italy, Poland and the Confederation of the Rhine fought as French satellites or allies, not independent belligerents.",
+      "Russia switched between French ally (Tilsit, 1807) and coalition partner (1812 onward).",
+      "The settlement at the Congress of Vienna (1815) defined European borders for a century.",
+    ],
+  },
+  seven_years: {
+    id: "seven_years",
+    title: "Seven Years' War",
+    years: "1756 – 1763",
+    blurb: "The first truly global war — Britain and Prussia vs France, Austria, Russia and Spain.",
+    sides: [
+      { id: "anglo_prussian", label: "Anglo–Prussian alliance", color: "82 120 178", outcome: "victor",
+        members: ["GBR","DEU","PRT"] },
+      { id: "franco_austrian", label: "Franco–Austrian alliance", color: "188 92 96", outcome: "defeated",
+        members: ["FRA","AUT","RUS","ESP","SWE"] },
+    ],
+    summary:
+      "Fought across Europe, North America (French and Indian War), the Caribbean, West Africa, India and the Philippines. Britain emerged as the dominant global maritime power; France lost Canada and most of its Indian holdings. The war's debts pushed Britain to tax its American colonies, setting the stage for 1776.",
+  },
+  american_revolution: {
+    id: "american_revolution",
+    title: "American Revolutionary War",
+    years: "1775 – 1783",
+    blurb: "Thirteen Colonies and allies vs the British Empire.",
+    sides: [
+      { id: "patriots", label: "United States & allies", color: "82 120 178", outcome: "victor",
+        members: ["USA","FRA","ESP","NLD"] },
+      { id: "british", label: "British Empire", color: "188 92 96", outcome: "defeated",
+        members: ["GBR"] },
+    ],
+    summary:
+      "The Thirteen Colonies declared independence in 1776. French entry in 1778, followed by Spain and the Dutch Republic, turned the war global. British surrender at Yorktown (1781) and the Treaty of Paris (1783) recognised the United States.",
+  },
+  civil_war: {
+    id: "civil_war",
+    title: "American Civil War",
+    years: "1861 – 1865",
+    blurb: "Union vs Confederacy over slavery and secession.",
+    sides: [
+      { id: "union", label: "Union", color: "82 120 178", outcome: "victor",
+        members: ["USA"] },
+      { id: "csa", label: "Confederacy", color: "188 92 96", outcome: "defeated",
+        members: [] },
+    ],
+    summary:
+      "After eleven Southern states seceded to preserve slavery, four years of war killed ~750,000 Americans — more than every other U.S. war combined. The Union victory ended slavery (13th Amendment) and produced the modern federal nation-state.",
+    notes: [
+      "Confederate states are not represented on the country layer because they were not internationally recognised.",
+      "The United Kingdom and France remained officially neutral but tilted toward the Confederacy economically (cotton).",
+    ],
+  },
+  franco_prussian: {
+    id: "franco_prussian",
+    title: "Franco–Prussian War",
+    years: "1870 – 1871",
+    blurb: "Prussia and the German states crush the Second French Empire.",
+    sides: [
+      { id: "germany", label: "North German Confederation & South German states", color: "82 120 178", outcome: "victor",
+        members: ["DEU"] },
+      { id: "france", label: "Second French Empire / Third Republic", color: "188 92 96", outcome: "defeated",
+        members: ["FRA"] },
+    ],
+    summary:
+      "Bismarck's Prussia decisively defeated France, captured Napoleon III at Sedan, and proclaimed the German Empire at Versailles in January 1871. France ceded Alsace–Lorraine, a grievance that fed directly into WWI.",
+  },
+  russo_japanese: {
+    id: "russo_japanese",
+    title: "Russo–Japanese War",
+    years: "1904 – 1905",
+    blurb: "Imperial Japan's victory over the Russian Empire.",
+    sides: [
+      { id: "japan", label: "Empire of Japan", color: "82 120 178", outcome: "victor",
+        members: ["JPN"] },
+      { id: "russia", label: "Russian Empire", color: "188 92 96", outcome: "defeated",
+        members: ["RUS"] },
+    ],
+    summary:
+      "Fought over Korea and Manchuria, the war ended with Japan's annihilation of the Russian Baltic Fleet at Tsushima — the first defeat of a European great power by an Asian state in the industrial age. The U.S.-brokered Treaty of Portsmouth recognised Japan's regional primacy.",
+  },
+  spanish_civil: {
+    id: "spanish_civil",
+    title: "Spanish Civil War",
+    years: "1936 – 1939",
+    blurb: "Republicans vs Franco's Nationalists — the dress rehearsal for WWII.",
+    sides: [
+      { id: "republicans", label: "Republicans", color: "82 120 178", outcome: "defeated",
+        members: ["RUS","MEX"] },
+      { id: "nationalists", label: "Nationalists", color: "188 92 96", outcome: "victor",
+        members: ["ESP","DEU","ITA","PRT"] },
+    ],
+    summary:
+      "A military coup against the Second Spanish Republic became a three-year war. Nazi Germany and Fascist Italy supplied Franco's Nationalists (and tested doctrine — Guernica, 1937); the USSR backed the Republicans; ~35,000 international volunteers fought in the International Brigades. Franco's dictatorship lasted until 1975.",
+  },
+  indo_pak_1971: {
+    id: "indo_pak_1971",
+    title: "Indo-Pakistani War of 1971 / Bangladesh Liberation War",
+    years: "1971",
+    blurb: "India intervenes in East Pakistan; Bangladesh is born.",
+    sides: [
+      { id: "india_bd", label: "India & Bangladesh", color: "82 120 178", outcome: "victor",
+        members: ["IND","BGD"] },
+      { id: "pakistan", label: "Pakistan", color: "188 92 96", outcome: "defeated",
+        members: ["PAK"] },
+    ],
+    summary:
+      "After the Pakistani Army's crackdown on Bengali nationalists triggered ~10 million refugees into India, India intervened militarily in December 1971. In 13 days Pakistani forces in the East surrendered at Dhaka — the largest surrender since WWII — and Bangladesh became independent.",
+  },
+  iran_iraq: {
+    id: "iran_iraq",
+    title: "Iran–Iraq War",
+    years: "1980 – 1988",
+    blurb: "Saddam's Iraq invades post-revolutionary Iran.",
+    sides: [
+      { id: "iraq", label: "Iraq & backers", color: "82 120 178", outcome: "mixed",
+        members: ["IRQ","SAU","KWT","ARE","JOR"] },
+      { id: "iran", label: "Iran & supporters", color: "188 92 96", outcome: "mixed",
+        members: ["IRN","SYR","LBY","PRK"] },
+    ],
+    summary:
+      "Eight years of trench warfare, chemical weapons and tanker attacks killed an estimated million people and ended roughly at the pre-war borders. The U.S. and most Arab states tilted toward Iraq; Syria, Libya and North Korea backed Iran. The war bankrupted Iraq and led directly to its 1990 invasion of Kuwait.",
+  },
+  yugoslav_wars: {
+    id: "yugoslav_wars",
+    title: "Yugoslav Wars",
+    years: "1991 – 2001",
+    blurb: "The violent breakup of Yugoslavia and NATO intervention in Kosovo.",
+    sides: [
+      { id: "successors", label: "Croatia, Bosnia, Kosovo, NATO", color: "82 120 178", outcome: "victor",
+        members: ["HRV","BIH","ALB","USA","GBR","FRA","DEU","ITA","NLD","TUR"] },
+      { id: "serbia", label: "FR Yugoslavia / Serbia", color: "188 92 96", outcome: "defeated",
+        members: ["SRB","MKD"] },
+    ],
+    summary:
+      "A decade of wars across Slovenia, Croatia, Bosnia and Kosovo killed ~140,000 and produced Europe's worst atrocities since WWII — Srebrenica, the siege of Sarajevo, ethnic cleansing in Krajina and Kosovo. NATO bombed Serbian positions in 1995 (Bosnia) and 1999 (Kosovo).",
+  },
+  syrian_civil: {
+    id: "syrian_civil",
+    title: "Syrian Civil War",
+    years: "2011 – 2024",
+    blurb: "Assad's Syria, Russia and Iran vs the opposition, ISIS and the U.S.-led coalition.",
+    sides: [
+      { id: "assad", label: "Assad government & allies", color: "82 120 178", outcome: "defeated",
+        members: ["SYR","RUS","IRN"] },
+      { id: "opposition", label: "Opposition & Turkish-backed forces", color: "188 92 96", outcome: "victor",
+        members: ["TUR"] },
+      { id: "coalition", label: "U.S.-led anti-ISIS coalition / SDF", color: "150 142 168", outcome: "mixed",
+        members: ["USA","GBR","FRA"] },
+    ],
+    summary:
+      "What began as Arab Spring protests became a multi-sided war: Assad backed by Russia and Iran, opposition fragmented between Turkish-backed factions, U.S.-backed Kurdish-led SDF and ISIS. The war killed ~600,000 and displaced over half the population. In December 2024 a rebel offensive led by HTS captured Damascus and Assad fled to Moscow.",
+  },
+  gaza_war: {
+    id: "gaza_war",
+    title: "Israel–Hamas War (Gaza)",
+    years: "2023 – present",
+    blurb: "Israeli campaign in Gaza after the October 7 attacks.",
+    sides: [
+      { id: "isr", label: "Israel & backers", color: "82 120 178",
+        members: ["ISR","USA"] },
+      { id: "axis_resistance", label: "Hamas, Hezbollah, Houthis, Iran", color: "188 92 96",
+        members: ["IRN","YEM","LBN","SYR"] },
+    ],
+    summary:
+      "After Hamas's 7 October 2023 cross-border assault, Israel launched a sustained air and ground campaign in Gaza, opened a second front in southern Lebanon against Hezbollah, and exchanged direct strikes with Iran in 2024 and 2025. The war has killed tens of thousands of Palestinians and reshaped the regional balance.",
+  },
 };
 
 // ── TRADE ROUTES ────────────────────────────────────────────────────────────
@@ -302,6 +481,77 @@ export const TRADES: Record<string, TradeDef> = {
       { from: [-34, 18], to: [6, 80], label: "Cape → Ceylon", color: "90 110 140" },
       { from: [6, 80], to: [-6, 106], label: "→ Batavia (Java)", color: "90 110 140" },
       { from: [-6, 106], to: [-3, 128], label: "→ Spice Islands", color: "90 110 140" },
+    ],
+  },
+  opium: {
+    id: "opium",
+    title: "Opium Trade (British East India Co. → Qing China)",
+    years: "c. 1773 – 1860",
+    blurb: "British-grown Bengal opium shipped into Qing China to balance the tea trade.",
+    summary:
+      "To reverse Britain's silver outflow from buying Chinese tea, the East India Company cultivated opium in Bengal and Bihar and smuggled it through Canton via country traders. By the 1830s ~30,000 chests a year were flowing in, creating mass addiction and a reverse silver drain. Qing attempts to suppress the trade triggered the two Opium Wars (1839–42, 1856–60), forced cession of Hong Kong and the 'unequal treaties'.",
+    arrows: [
+      { from: [25, 87], to: [22, 113], label: "bengal opium → canton", color: "140 90 70" },
+      { from: [22, 113], to: [22, 114], label: "→ hong kong (post-1842)", color: "140 90 70" },
+      { from: [30, 121], to: [51, 0], label: "tea & silk → london", color: "120 80 90" },
+    ],
+    notes: [
+      "First Opium War (1839–42): Treaty of Nanjing ceded Hong Kong Island.",
+      "Second Opium War (1856–60): Anglo-French force burned the Old Summer Palace.",
+      "By 1880 China produced more opium domestically than it imported.",
+    ],
+  },
+  trans_saharan: {
+    id: "trans_saharan",
+    title: "Trans-Saharan Trade",
+    years: "c. 700 – 1600",
+    blurb: "Gold, salt and enslaved people across the Sahara between West Africa and the Mediterranean.",
+    summary:
+      "Camel caravans linked the empires of Ghana, Mali and Songhai with North Africa and the Mediterranean world. West African gold (Bambuk, Bure, Akan) funded the Almoravid, Almohad and Mamluk states; Saharan salt from Taghaza moved south; an estimated 6–10 million enslaved Africans were taken north over nine centuries.",
+    arrows: [
+      { from: [13, -8], to: [31, -8], label: "gold, ivory →", color: "150 120 60" },
+      { from: [31, -8], to: [36, -5], label: "→ marrakesh, fez", color: "150 120 60" },
+      { from: [22, -3], to: [16, -2], label: "← saharan salt (taghaza)", color: "120 80 90" },
+      { from: [13, -8], to: [30, 31], label: "enslaved africans → cairo", color: "168 80 90" },
+    ],
+  },
+  indian_ocean: {
+    id: "indian_ocean",
+    title: "Indian Ocean Trade Network",
+    years: "c. 200 BCE – 1500 CE",
+    blurb: "Monsoon-driven exchange between East Africa, Arabia, India, Southeast Asia and China.",
+    summary:
+      "Long before European arrival, monsoon winds powered a thousand-year exchange of textiles, spices, gold, ivory, porcelain and ideas linking Swahili coast city-states, Oman and Yemen, Gujarat and the Malabar, Sri Lanka, Sumatra and southern China. Islam, Hinduism and Buddhism spread along these routes.",
+    arrows: [
+      { from: [-6, 39], to: [12, 45], label: "ivory, gold → arabia", color: "120 90 60" },
+      { from: [12, 45], to: [10, 76], label: "→ malabar coast", color: "120 90 60" },
+      { from: [10, 76], to: [6, 80], label: "→ ceylon", color: "120 90 60" },
+      { from: [6, 80], to: [22, 113], label: "→ canton", color: "120 90 60" },
+    ],
+  },
+  columbian_exchange: {
+    id: "columbian_exchange",
+    title: "Columbian Exchange",
+    years: "1492 – 1700s",
+    blurb: "Transatlantic exchange of crops, animals, people and disease after Columbus.",
+    summary:
+      "The contact of 1492 transferred maize, potatoes, tomatoes, tobacco and cacao east; wheat, sugar, cattle, horses, and lethal pathogens (smallpox, measles) west. Old World diseases killed an estimated 56 million Indigenous Americans — roughly 90% of the pre-contact population — within 150 years. The exchange remade global agriculture, demographics and ecology.",
+    arrows: [
+      { from: [10, -75], to: [40, -10], label: "maize, potato, tobacco →", color: "120 90 60" },
+      { from: [40, -10], to: [15, -75], label: "← wheat, sugar, horses, smallpox", color: "168 80 90" },
+    ],
+  },
+  trans_pacific_galleon: {
+    id: "trans_pacific_galleon",
+    title: "Manila Galleon Trade",
+    years: "1565 – 1815",
+    blurb: "Spanish silver from Acapulco for Chinese silk via Manila.",
+    summary:
+      "For 250 years Spanish galleons sailed annually between Acapulco and Manila, exchanging Mexican and Peruvian silver (from Potosí and Zacatecas) for Chinese silk, porcelain and spices. The route monetised Ming and Qing China on silver and made Manila the first truly Pacific commercial hub.",
+    arrows: [
+      { from: [17, -100], to: [14, 121], label: "acapulco → manila (silver)", color: "120 90 60" },
+      { from: [14, 121], to: [17, -100], label: "manila → acapulco (silk, porcelain)", color: "120 80 90" },
+      { from: [14, 121], to: [22, 113], label: "→ canton (silver)", color: "120 90 60" },
     ],
   },
 };
@@ -634,6 +884,144 @@ export const ATTACKS: Record<string, AttackDef> = {
     pos: [12.78, 44.97],
     color: "168 80 90",
   },
+  coventry: {
+    id: "coventry",
+    title: "Bombing of Coventry (Operation Moonlight Sonata)",
+    date: "14 – 15 November 1940",
+    location: "Coventry, United Kingdom",
+    blurb: "Luftwaffe raid that destroyed Coventry's medieval centre.",
+    summary:
+      "515 Luftwaffe bombers dropped ~500 tons of high explosives and ~36,000 incendiaries on Coventry in a single night, killing 568 people, destroying the cathedral and ~4,000 homes. The raid gave the German word 'koventrieren' (to coventrate) — to flatten a city by air.",
+    pos: [52.41, -1.51],
+    from: [49.0, 2.5],
+    fromLabel: "luftflotte 3 · northern france",
+    color: "188 92 96",
+  },
+  warsaw_uprising_bombing: {
+    id: "warsaw_uprising_bombing",
+    title: "Destruction of Warsaw",
+    date: "October 1944 – January 1945",
+    location: "Warsaw, Poland",
+    blurb: "Systematic German demolition of Warsaw after the 1944 Uprising.",
+    summary:
+      "After crushing the 63-day Warsaw Uprising, German Vernichtungskommandos systematically dynamited and burned the city block by block on Hitler's order. ~85% of left-bank Warsaw was destroyed; 200,000 Poles died in the uprising and reprisals while Red Army units waited on the far bank of the Vistula.",
+    pos: [52.23, 21.01],
+    color: "188 92 96",
+  },
+  guernica: {
+    id: "guernica",
+    title: "Bombing of Guernica",
+    date: "26 April 1937",
+    location: "Guernica, Basque Country, Spain",
+    blurb: "Condor Legion terror raid that inspired Picasso's painting.",
+    summary:
+      "German Condor Legion and Italian Aviazione Legionaria aircraft bombed the Basque market town of Guernica in support of Franco's Nationalists. The first deliberate aerial bombing of a defenceless civilian town in European history killed an estimated 200–300 people and became a moral template for the WWII air war.",
+    pos: [43.32, -2.68],
+    from: [42.46, -3.71],
+    fromLabel: "condor legion · burgos airfield",
+    color: "188 92 96",
+  },
+  bay_of_pigs: {
+    id: "bay_of_pigs",
+    title: "Bay of Pigs Invasion",
+    date: "17 – 20 April 1961",
+    location: "Playa Girón, Cuba",
+    blurb: "CIA-trained Cuban exiles fail to overthrow Castro.",
+    summary:
+      "1,400 CIA-trained Cuban exiles (Brigade 2506) landed at the Bay of Pigs to spark an anti-Castro uprising. Without the promised U.S. air cover, the brigade was crushed within three days. The fiasco humiliated the Kennedy administration, pushed Cuba decisively into the Soviet orbit and led directly to the Cuban Missile Crisis.",
+    pos: [22.10, -81.10],
+    from: [16.7, -86.0],
+    fromLabel: "brigade 2506 · puerto cabezas, nicaragua",
+    color: "168 80 90",
+  },
+  tet_offensive: {
+    id: "tet_offensive",
+    title: "Tet Offensive",
+    date: "30 January – September 1968",
+    location: "South Vietnam",
+    blurb: "Coordinated North Vietnamese and Viet Cong assault during Lunar New Year.",
+    summary:
+      "~80,000 NVA and Viet Cong troops attacked over 100 cities and bases in South Vietnam simultaneously, including the U.S. embassy in Saigon. Tactically a U.S. and ARVN victory — Viet Cong forces were largely destroyed — but strategically a turning point: the offensive shattered U.S. public confidence in the war.",
+    pos: [10.78, 106.70],
+    color: "188 92 96",
+  },
+  munich_beer_hall: {
+    id: "munich_beer_hall",
+    title: "Beer Hall Putsch",
+    date: "8 – 9 November 1923",
+    location: "Munich, Germany",
+    blurb: "Hitler's failed coup attempt against the Bavarian government.",
+    summary:
+      "Adolf Hitler and 2,000 Nazi paramilitaries marched on the Bavarian government from the Bürgerbräukeller beer hall. Police killed sixteen Nazis; Hitler was arrested and used his trial to broadcast NSDAP propaganda, writing Mein Kampf during his nine months at Landsberg. The putsch convinced him to take power legally.",
+    pos: [48.13, 11.58],
+    color: "168 80 90",
+  },
+  hindenburg_assassination: {
+    id: "sarajevo_1914",
+    title: "Assassination of Archduke Franz Ferdinand",
+    date: "28 June 1914",
+    location: "Sarajevo, Bosnia",
+    blurb: "Gavrilo Princip's shooting triggers World War I.",
+    summary:
+      "Bosnian Serb nationalist Gavrilo Princip, a member of the Black Hand-linked Young Bosnia, shot Archduke Franz Ferdinand and Duchess Sophie on the Latin Bridge in Sarajevo. Austria-Hungary's ultimatum to Serbia triggered the chain of alliance mobilisations that started WWI within five weeks.",
+    pos: [43.86, 18.41],
+    color: "168 80 90",
+  },
+  oct_revolution: {
+    id: "oct_revolution",
+    title: "October Revolution (Petrograd)",
+    date: "7 November 1917",
+    location: "Petrograd, Russia",
+    blurb: "Bolshevik seizure of the Winter Palace.",
+    summary:
+      "Bolshevik Red Guards under Lenin and Trotsky stormed the Winter Palace and arrested the Provisional Government, completing the world's first communist seizure of state power. The new regime exited WWI at Brest-Litovsk and inaugurated 74 years of Soviet rule.",
+    pos: [59.94, 30.31],
+    color: "188 92 96",
+  },
+  berlin_wall_fall: {
+    id: "berlin_wall_fall",
+    title: "Fall of the Berlin Wall",
+    date: "9 November 1989",
+    location: "Berlin, Germany",
+    blurb: "East German checkpoints open; the Cold War ends in Europe.",
+    summary:
+      "After weeks of mass protests and East German emigration via Hungary, an SED spokesman misstated new travel rules at a live press conference. East Berliners flooded the checkpoints; guards stood down. Germany was reunified within eleven months and the Warsaw Pact dissolved two years later.",
+    pos: [52.52, 13.40],
+    color: "82 120 178",
+  },
+  mukden: {
+    id: "mukden",
+    title: "Mukden Incident",
+    date: "18 September 1931",
+    location: "Mukden (Shenyang), Manchuria",
+    blurb: "Staged bombing used as pretext for Japan's invasion of Manchuria.",
+    summary:
+      "Officers of Japan's Kwantung Army detonated a small charge on the South Manchuria Railway and blamed Chinese soldiers. Within months Japan occupied all of Manchuria and installed the puppet state of Manchukuo. The League of Nations' failure to respond set the template for 1930s aggression.",
+    pos: [41.80, 123.43],
+    color: "188 92 96",
+  },
+  bali_2002: {
+    id: "bali_2002",
+    title: "Bali Bombings",
+    date: "12 October 2002",
+    location: "Kuta, Bali, Indonesia",
+    blurb: "Jemaah Islamiyah bombings of nightclubs popular with tourists.",
+    summary:
+      "A backpack suicide bomb inside Paddy's Pub and a one-ton car bomb outside the Sari Club killed 202 people from 22 countries, including 88 Australians. The deadliest terrorist attack in Indonesian history and the largest single loss of Australian life to terrorism.",
+    pos: [-8.72, 115.17],
+    color: "168 80 90",
+  },
+  nairobi_westgate: {
+    id: "nairobi_westgate",
+    title: "Westgate Mall Attack",
+    date: "21 – 24 September 2013",
+    location: "Nairobi, Kenya",
+    blurb: "Al-Shabaab gunmen besiege a Nairobi shopping mall.",
+    summary:
+      "Four al-Shabaab gunmen attacked the upscale Westgate Mall, killing 67 people and wounding 175 over a four-day siege. The attack was framed as retaliation for Kenya's 2011 military intervention in Somalia.",
+    pos: [-1.27, 36.80],
+    color: "168 80 90",
+  },
 };
 
 // ── MAJOR ERAS / EVENTS ─────────────────────────────────────────────────────
@@ -790,6 +1178,116 @@ export const MAJOR_EVENTS: Record<string, EraDef> = {
       "1991: 'unipolar moment' after USSR collapse.",
       "2001+: Global War on Terror reshapes posture.",
     ],
+  },
+  qing_dynasty: {
+    id: "qing_dynasty",
+    title: "Qing Dynasty",
+    years: "1644 – 1912",
+    blurb: "China's last imperial dynasty — from Manchu conquest to the Republic.",
+    summary:
+      "The Manchu Qing took Beijing in 1644 and built the largest Chinese empire in history, doubling territory to include Mongolia, Tibet, Xinjiang and Taiwan. After 1840 it was hollowed out by the Opium Wars, the Taiping Rebellion (~20–30M dead), the unequal treaties and the 1911 revolution. The boy-emperor Puyi abdicated in 1912.",
+    regions: ["east asia"],
+    countries: ["CHN","MNG","TWN","RUS"],
+    notes: [
+      "1644: Manchu conquest of Beijing.",
+      "1839–60: Opium Wars; Hong Kong ceded.",
+      "1850–64: Taiping Rebellion; ~20–30M dead.",
+      "1900: Boxer Rebellion; eight-nation alliance occupies Beijing.",
+      "1911–12: Xinhai Revolution; Republic of China proclaimed.",
+    ],
+  },
+  mughal_empire: {
+    id: "mughal_empire",
+    title: "Mughal Empire",
+    years: "1526 – 1857",
+    blurb: "Turco-Mongol empire that ruled most of the Indian subcontinent.",
+    summary:
+      "Founded by Babur after the Battle of Panipat, the Mughals reached their zenith under Akbar and Aurangzeb, ruling ~150 million people and producing the Taj Mahal, Red Fort and a syncretic Indo-Persian high culture. After 1707 the empire fragmented; the East India Company became paramount in 1757 (Plassey) and the British exiled the last emperor in 1858.",
+    regions: ["south asia"],
+    countries: ["IND","PAK","BGD","AFG"],
+  },
+  french_revolution: {
+    id: "french_revolution",
+    title: "French Revolution",
+    years: "1789 – 1799",
+    blurb: "Storming of the Bastille to Napoleon's coup.",
+    summary:
+      "A fiscal crisis and Enlightenment ideas toppled the Bourbon monarchy. The Revolution proclaimed the Rights of Man, executed Louis XVI and Marie Antoinette, fought off the First Coalition, descended into the Terror under Robespierre, and ended with Napoleon's 18 Brumaire coup. It rewrote European politics, exporting nationalism and the metric system.",
+    regions: ["europe"],
+    countries: ["FRA","GBR","AUT","PRT","ESP","DEU","RUS"],
+    notes: [
+      "1789: Bastille; Declaration of the Rights of Man.",
+      "1793: Louis XVI executed; Reign of Terror.",
+      "1794: Thermidorian Reaction; Robespierre executed.",
+      "1799: Napoleon's coup ends the revolutionary republic.",
+    ],
+  },
+  industrial_revolution: {
+    id: "industrial_revolution",
+    title: "Industrial Revolution",
+    years: "c. 1760 – 1900",
+    blurb: "Steam, coal and the factory remake the world economy.",
+    summary:
+      "Beginning in Britain with textiles, steam engines and ironworks, the Industrial Revolution moved through Belgium, France, Germany and the United States, then Japan. World per-capita output roughly quadrupled in a century. It produced the modern industrial city, the working class, the railway and global energy demand.",
+    regions: ["europe", "north america", "east asia"],
+    countries: ["GBR","DEU","FRA","BEL","USA","JPN"],
+  },
+  scramble_for_africa: {
+    id: "scramble_for_africa",
+    title: "Scramble for Africa",
+    years: "1881 – 1914",
+    blurb: "European partition of Africa formalised at the Berlin Conference.",
+    summary:
+      "Between 1881 and 1914 European powers (chiefly Britain, France, Germany, Belgium, Portugal and Italy) seized ~90% of African territory. The 1884–85 Berlin Conference set the ground rules without African participation. King Leopold II's Congo Free State alone killed an estimated 10 million people. The borders drawn then remain Africa's borders today.",
+    regions: ["africa"],
+    countries: ["GBR","FRA","DEU","BEL","PRT","ITA","ESP","COD","NGA","KEN","ZAF","DZA"],
+  },
+  arab_spring: {
+    id: "arab_spring",
+    title: "Arab Spring",
+    years: "2010 – 2012",
+    blurb: "Wave of uprisings across the Arab world.",
+    summary:
+      "Triggered by Tunisian street vendor Mohamed Bouazizi's self-immolation, mass protests toppled the leaders of Tunisia, Egypt, Libya and Yemen and ignited the Syrian civil war. Only Tunisia produced a sustained democratic transition; counter-revolution returned in Egypt (2013) and civil wars consumed Libya, Yemen and Syria.",
+    regions: ["mena", "north africa"],
+    countries: ["TUN","EGY","LBY","SYR","YEM","BHR","JOR"],
+    notes: [
+      "Dec 2010: Mohamed Bouazizi self-immolates in Tunisia.",
+      "Jan 2011: Ben Ali flees Tunisia.",
+      "Feb 2011: Mubarak resigns in Egypt.",
+      "Oct 2011: Gaddafi killed in Libya.",
+      "2011+: Syrian civil war begins.",
+    ],
+  },
+  apartheid: {
+    id: "apartheid",
+    title: "Apartheid South Africa",
+    years: "1948 – 1994",
+    blurb: "Institutionalised racial segregation under the National Party.",
+    summary:
+      "After the 1948 election, South Africa's National Party built a legal system of racial classification, forced removals (3.5M people), bantustans and disenfranchisement of the Black majority. International sanctions, internal resistance led by the ANC, and the fall of the Soviet bloc combined to force F.W. de Klerk to release Nelson Mandela in 1990. Apartheid ended with the 1994 multiracial elections.",
+    regions: ["southern africa"],
+    countries: ["ZAF","NAM","BWA","ZWE"],
+  },
+  globalization_china: {
+    id: "globalization_china",
+    title: "China's Reform and Opening",
+    years: "1978 – present",
+    blurb: "Deng Xiaoping's reforms transform China into the world's second economy.",
+    summary:
+      "Deng Xiaoping's 1978 reforms — household responsibility in agriculture, special economic zones, foreign investment — lifted ~800 million Chinese out of poverty and made China the world's manufacturing hub. WTO accession (2001) integrated China into the global trading system; the Belt and Road Initiative (2013) projected economic statecraft globally. China's GDP overtook Japan in 2010 to become the world's second-largest.",
+    regions: ["east asia", "global"],
+    countries: ["CHN","USA","JPN","KOR","TWN"],
+  },
+  partition_india: {
+    id: "partition_india",
+    title: "Partition of India",
+    years: "1947",
+    blurb: "British India split into India and Pakistan along religious lines.",
+    summary:
+      "The Radcliffe Line, drawn in five weeks by a barrister who had never visited India, divided British India into a Hindu-majority India and a Muslim-majority Pakistan (east and west wings). Up to two million people were killed in communal violence and ~15 million were displaced — the largest mass migration in human history. The partition's wounds underwrote four India–Pakistan wars and the Kashmir dispute.",
+    regions: ["south asia"],
+    countries: ["IND","PAK","BGD","GBR"],
   },
 };
 
