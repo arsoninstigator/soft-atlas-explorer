@@ -235,6 +235,185 @@ export const WARS: Record<string, WarDef> = {
     summary:
       "Russia annexed Crimea in 2014 and launched a full-scale invasion of Ukraine on 24 Feb 2022. NATO members, while not co-belligerent, have provided sustained military and financial support to Ukraine.",
   },
+  napoleonic: {
+    id: "napoleonic",
+    title: "Napoleonic Wars",
+    years: "1803 – 1815",
+    blurb: "Napoleon's France against successive European coalitions.",
+    sides: [
+      { id: "france", label: "First French Empire & allies", color: "82 120 178", outcome: "defeated",
+        members: ["FRA","ESP","ITA","NLD","POL","DNK","NOR"] },
+      { id: "coalition", label: "Coalition powers", color: "188 92 96", outcome: "victor",
+        members: ["GBR","RUS","AUT","PRT","SWE","DEU"] },
+    ],
+    summary:
+      "Seven coalitions of European powers fought Napoleonic France for over a decade across Europe, Egypt and the Atlantic. The Russian campaign of 1812 destroyed the Grande Armée; defeat at Leipzig (1813) and Waterloo (1815) ended Napoleon's empire and produced the conservative Concert of Europe.",
+    notes: [
+      "Spain, Italy, Poland and the Confederation of the Rhine fought as French satellites or allies, not independent belligerents.",
+      "Russia switched between French ally (Tilsit, 1807) and coalition partner (1812 onward).",
+      "The settlement at the Congress of Vienna (1815) defined European borders for a century.",
+    ],
+  },
+  seven_years: {
+    id: "seven_years",
+    title: "Seven Years' War",
+    years: "1756 – 1763",
+    blurb: "The first truly global war — Britain and Prussia vs France, Austria, Russia and Spain.",
+    sides: [
+      { id: "anglo_prussian", label: "Anglo–Prussian alliance", color: "82 120 178", outcome: "victor",
+        members: ["GBR","DEU","PRT"] },
+      { id: "franco_austrian", label: "Franco–Austrian alliance", color: "188 92 96", outcome: "defeated",
+        members: ["FRA","AUT","RUS","ESP","SWE"] },
+    ],
+    summary:
+      "Fought across Europe, North America (French and Indian War), the Caribbean, West Africa, India and the Philippines. Britain emerged as the dominant global maritime power; France lost Canada and most of its Indian holdings. The war's debts pushed Britain to tax its American colonies, setting the stage for 1776.",
+  },
+  american_revolution: {
+    id: "american_revolution",
+    title: "American Revolutionary War",
+    years: "1775 – 1783",
+    blurb: "Thirteen Colonies and allies vs the British Empire.",
+    sides: [
+      { id: "patriots", label: "United States & allies", color: "82 120 178", outcome: "victor",
+        members: ["USA","FRA","ESP","NLD"] },
+      { id: "british", label: "British Empire", color: "188 92 96", outcome: "defeated",
+        members: ["GBR"] },
+    ],
+    summary:
+      "The Thirteen Colonies declared independence in 1776. French entry in 1778, followed by Spain and the Dutch Republic, turned the war global. British surrender at Yorktown (1781) and the Treaty of Paris (1783) recognised the United States.",
+  },
+  civil_war: {
+    id: "civil_war",
+    title: "American Civil War",
+    years: "1861 – 1865",
+    blurb: "Union vs Confederacy over slavery and secession.",
+    sides: [
+      { id: "union", label: "Union", color: "82 120 178", outcome: "victor",
+        members: ["USA"] },
+      { id: "csa", label: "Confederacy", color: "188 92 96", outcome: "defeated",
+        members: [] },
+    ],
+    summary:
+      "After eleven Southern states seceded to preserve slavery, four years of war killed ~750,000 Americans — more than every other U.S. war combined. The Union victory ended slavery (13th Amendment) and produced the modern federal nation-state.",
+    notes: [
+      "Confederate states are not represented on the country layer because they were not internationally recognised.",
+      "The United Kingdom and France remained officially neutral but tilted toward the Confederacy economically (cotton).",
+    ],
+  },
+  franco_prussian: {
+    id: "franco_prussian",
+    title: "Franco–Prussian War",
+    years: "1870 – 1871",
+    blurb: "Prussia and the German states crush the Second French Empire.",
+    sides: [
+      { id: "germany", label: "North German Confederation & South German states", color: "82 120 178", outcome: "victor",
+        members: ["DEU"] },
+      { id: "france", label: "Second French Empire / Third Republic", color: "188 92 96", outcome: "defeated",
+        members: ["FRA"] },
+    ],
+    summary:
+      "Bismarck's Prussia decisively defeated France, captured Napoleon III at Sedan, and proclaimed the German Empire at Versailles in January 1871. France ceded Alsace–Lorraine, a grievance that fed directly into WWI.",
+  },
+  russo_japanese: {
+    id: "russo_japanese",
+    title: "Russo–Japanese War",
+    years: "1904 – 1905",
+    blurb: "Imperial Japan's victory over the Russian Empire.",
+    sides: [
+      { id: "japan", label: "Empire of Japan", color: "82 120 178", outcome: "victor",
+        members: ["JPN"] },
+      { id: "russia", label: "Russian Empire", color: "188 92 96", outcome: "defeated",
+        members: ["RUS"] },
+    ],
+    summary:
+      "Fought over Korea and Manchuria, the war ended with Japan's annihilation of the Russian Baltic Fleet at Tsushima — the first defeat of a European great power by an Asian state in the industrial age. The U.S.-brokered Treaty of Portsmouth recognised Japan's regional primacy.",
+  },
+  spanish_civil: {
+    id: "spanish_civil",
+    title: "Spanish Civil War",
+    years: "1936 – 1939",
+    blurb: "Republicans vs Franco's Nationalists — the dress rehearsal for WWII.",
+    sides: [
+      { id: "republicans", label: "Republicans", color: "82 120 178", outcome: "defeated",
+        members: ["RUS","MEX"] },
+      { id: "nationalists", label: "Nationalists", color: "188 92 96", outcome: "victor",
+        members: ["ESP","DEU","ITA","PRT"] },
+    ],
+    summary:
+      "A military coup against the Second Spanish Republic became a three-year war. Nazi Germany and Fascist Italy supplied Franco's Nationalists (and tested doctrine — Guernica, 1937); the USSR backed the Republicans; ~35,000 international volunteers fought in the International Brigades. Franco's dictatorship lasted until 1975.",
+  },
+  indo_pak_1971: {
+    id: "indo_pak_1971",
+    title: "Indo-Pakistani War of 1971 / Bangladesh Liberation War",
+    years: "1971",
+    blurb: "India intervenes in East Pakistan; Bangladesh is born.",
+    sides: [
+      { id: "india_bd", label: "India & Bangladesh", color: "82 120 178", outcome: "victor",
+        members: ["IND","BGD"] },
+      { id: "pakistan", label: "Pakistan", color: "188 92 96", outcome: "defeated",
+        members: ["PAK"] },
+    ],
+    summary:
+      "After the Pakistani Army's crackdown on Bengali nationalists triggered ~10 million refugees into India, India intervened militarily in December 1971. In 13 days Pakistani forces in the East surrendered at Dhaka — the largest surrender since WWII — and Bangladesh became independent.",
+  },
+  iran_iraq: {
+    id: "iran_iraq",
+    title: "Iran–Iraq War",
+    years: "1980 – 1988",
+    blurb: "Saddam's Iraq invades post-revolutionary Iran.",
+    sides: [
+      { id: "iraq", label: "Iraq & backers", color: "82 120 178", outcome: "mixed",
+        members: ["IRQ","SAU","KWT","ARE","JOR"] },
+      { id: "iran", label: "Iran & supporters", color: "188 92 96", outcome: "mixed",
+        members: ["IRN","SYR","LBY","PRK"] },
+    ],
+    summary:
+      "Eight years of trench warfare, chemical weapons and tanker attacks killed an estimated million people and ended roughly at the pre-war borders. The U.S. and most Arab states tilted toward Iraq; Syria, Libya and North Korea backed Iran. The war bankrupted Iraq and led directly to its 1990 invasion of Kuwait.",
+  },
+  yugoslav_wars: {
+    id: "yugoslav_wars",
+    title: "Yugoslav Wars",
+    years: "1991 – 2001",
+    blurb: "The violent breakup of Yugoslavia and NATO intervention in Kosovo.",
+    sides: [
+      { id: "successors", label: "Croatia, Bosnia, Kosovo, NATO", color: "82 120 178", outcome: "victor",
+        members: ["HRV","BIH","ALB","USA","GBR","FRA","DEU","ITA","NLD","TUR"] },
+      { id: "serbia", label: "FR Yugoslavia / Serbia", color: "188 92 96", outcome: "defeated",
+        members: ["SRB","MKD"] },
+    ],
+    summary:
+      "A decade of wars across Slovenia, Croatia, Bosnia and Kosovo killed ~140,000 and produced Europe's worst atrocities since WWII — Srebrenica, the siege of Sarajevo, ethnic cleansing in Krajina and Kosovo. NATO bombed Serbian positions in 1995 (Bosnia) and 1999 (Kosovo).",
+  },
+  syrian_civil: {
+    id: "syrian_civil",
+    title: "Syrian Civil War",
+    years: "2011 – 2024",
+    blurb: "Assad's Syria, Russia and Iran vs the opposition, ISIS and the U.S.-led coalition.",
+    sides: [
+      { id: "assad", label: "Assad government & allies", color: "82 120 178", outcome: "defeated",
+        members: ["SYR","RUS","IRN"] },
+      { id: "opposition", label: "Opposition & Turkish-backed forces", color: "188 92 96", outcome: "victor",
+        members: ["TUR"] },
+      { id: "coalition", label: "U.S.-led anti-ISIS coalition / SDF", color: "150 142 168", outcome: "mixed",
+        members: ["USA","GBR","FRA"] },
+    ],
+    summary:
+      "What began as Arab Spring protests became a multi-sided war: Assad backed by Russia and Iran, opposition fragmented between Turkish-backed factions, U.S.-backed Kurdish-led SDF and ISIS. The war killed ~600,000 and displaced over half the population. In December 2024 a rebel offensive led by HTS captured Damascus and Assad fled to Moscow.",
+  },
+  gaza_war: {
+    id: "gaza_war",
+    title: "Israel–Hamas War (Gaza)",
+    years: "2023 – present",
+    blurb: "Israeli campaign in Gaza after the October 7 attacks.",
+    sides: [
+      { id: "isr", label: "Israel & backers", color: "82 120 178",
+        members: ["ISR","USA"] },
+      { id: "axis_resistance", label: "Hamas, Hezbollah, Houthis, Iran", color: "188 92 96",
+        members: ["IRN","YEM","LBN","SYR"] },
+    ],
+    summary:
+      "After Hamas's 7 October 2023 cross-border assault, Israel launched a sustained air and ground campaign in Gaza, opened a second front in southern Lebanon against Hezbollah, and exchanged direct strikes with Iran in 2024 and 2025. The war has killed tens of thousands of Palestinians and reshaped the regional balance.",
+  },
 };
 
 // ── TRADE ROUTES ────────────────────────────────────────────────────────────
