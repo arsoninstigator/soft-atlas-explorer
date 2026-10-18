@@ -61,7 +61,12 @@ function createReferenceThemeTileLayer(L: any) {
         context.putImageData(tilePixels, 0, 0);
         done(null, tile);
       };
-      sourceImage.onerror = () => done(new Error("map tile failed to load"), tile);
+      let retried = false;
+      sourceImage.onerror = () => {
+        // one quiet retry smooths over transient tile failures
+        if (!retried) { retried = true; sourceImage.src = this.getTileUrl(coords) + "&r=" + Date.now(); return; }
+        done(new Error("map tile failed to load"), tile);
+      };
       sourceImage.src = this.getTileUrl(coords);
       return tile;
     },
@@ -169,6 +174,8 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       const ReferenceThemeTileLayer = createReferenceThemeTileLayer(L);
       new ReferenceThemeTileLayer(TILE_BASE, {
         maxZoom: 10,
+        keepBuffer: 4,
+        updateWhenZooming: false,
         attribution: "© OpenStreetMap © CARTO",
       }).addTo(map);
       mapRef.current = map;
@@ -473,7 +480,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       overlayLayers.current.push(layer);
     }
   }, [ready, activeFilters.join("|"), toggles.borders, year, subKey,
-      highlightTag?.kind, highlightTag?.tag, (legalActive ?? []).join("|"), (legalSubActive ?? []).join("|"), labelOverrides]);
+      highlightTag?.kind, highlightTag?.tag, (legalActive ?? []).join("|"), (legalSubActive ?? []).join("|"), labelOverrides, claims, (religionActive ?? []).join("|"), toggles.endonyms]);
 
   return <div ref={ref} className="absolute inset-0 wd-map" />;
 }

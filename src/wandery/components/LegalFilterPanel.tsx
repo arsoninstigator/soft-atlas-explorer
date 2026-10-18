@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { SECTS, colorForTag } from "@/wandery/data/identity";
 import { LEGAL_ORDER, LEGAL_SYSTEMS, type LegalSystem } from "@/wandery/data/legal";
 
 interface Props {
@@ -6,14 +7,16 @@ interface Props {
   subActive: string[];
   onToggle: (s: LegalSystem) => void;
   onToggleSub: (subKey: string) => void;
+  religionActive?: string[];
+  onToggleReligion?: (sect: string) => void;
   onClose: () => void;
 }
 
-export default function LegalFilterPanel({ active, subActive, onToggle, onToggleSub, onClose }: Props) {
+export default function LegalFilterPanel({ active, subActive, onToggle, onToggleSub, religionActive = [], onToggleReligion, onClose }: Props) {
   return (
-    <aside className="pointer-events-auto w-[260px] bg-card/90 backdrop-blur-2xl border border-border/70 rounded-2xl shadow-md overflow-hidden animate-fade-in">
+    <aside className="pointer-events-auto w-[260px] max-h-[80vh] overflow-y-auto bg-card/90 backdrop-blur-2xl border border-border/70 rounded-2xl shadow-md overflow-hidden animate-fade-in">
       <div className="px-4 pt-3 pb-2 flex items-center justify-between border-b border-border/60">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">filter · legal systems</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">filter · law & religion</span>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 -mr-1">
           <X className="h-3.5 w-3.5" />
         </button>
@@ -70,6 +73,28 @@ export default function LegalFilterPanel({ active, subActive, onToggle, onToggle
             );
           })}
         </div>
+      </div>
+      <div className="px-4 py-3 border-t border-border/60 space-y-2">
+        <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">religious traditions</div>
+        <p className="text-[11px] text-muted-foreground italic leading-snug">schools within each faith. on /country/india, hindu traditions colour the states.</p>
+        {Object.entries(SECTS).map(([faith, sects]) => (
+          <div key={faith}>
+            <div className="text-[10px] text-muted-foreground mb-1">{faith}</div>
+            <div className="flex flex-wrap gap-1">
+              {Object.keys(sects).map(t => {
+                const on = religionActive.includes(t);
+                const col = colorForTag("religion", t);
+                return (
+                  <button key={t} onClick={() => onToggleReligion?.(t)}
+                    className={["font-mono text-[9px] px-2 py-0.5 rounded-full border transition-all",
+                      on ? "border-transparent text-foreground" : "border-border/50 text-muted-foreground/80 hover:text-foreground bg-card/60"].join(" ")}
+                    style={on ? { background: col.replace(")", " / 0.3)"), boxShadow: `0 0 0 1px ${col}` } : undefined}
+                  >#{t}</button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </aside>
   );
