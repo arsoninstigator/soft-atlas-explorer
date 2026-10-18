@@ -4,8 +4,11 @@ import { FILTERS, type FilterId } from "@/wandery/data/filters";
 import { polititiesAt, suppressedIsos, countryExists, COUNTRY_BIRTH } from "@/wandery/data/history";
 import { countriesForTag, colorForTag, type TagKind } from "@/wandery/data/identity";
 import { legalBlend, type LegalSystem } from "@/wandery/data/legal";
+import { claimColor, type Claim } from "@/wandery/data/claims";
+import { endonymLabel } from "@/wandery/data/countryinfo";
+import { INDIA_STATE_SECTS } from "@/wandery/data/identity";
 
-const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png";
+const TILE_BASE = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png?api_key=cb1_3zn8_1_c9a48537536b80672dce846f";
 
 const REFERENCE_MAP_COLORS = {
   ocean: [190, 218, 199],
@@ -117,6 +120,7 @@ export interface ToggleState {
   borders: boolean;
   terrain: boolean;
   pins: boolean;
+  endonyms: boolean;
 }
 
 interface Props {
@@ -131,11 +135,13 @@ interface Props {
   legalActive?: LegalSystem[];
   legalSubActive?: string[];
   labelOverrides?: Record<string, string>;
+  claims?: Claim[];
+  religionActive?: string[];
   onCountry: (iso: string, name: string) => void;
   onCountryContext?: (iso: string, name: string, x: number, y: number) => void;
 }
 
-export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, highlightTag, legalActive, legalSubActive, labelOverrides, onCountry, onCountryContext }: Props) {
+export default function AtlasMap({ center, zoom, activeFilters, toggles, year, labelMode = "countries", subdivisionsUrl, highlightTag, legalActive, legalSubActive, labelOverrides, claims, religionActive, onCountry, onCountryContext }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const labelsLayer = useRef<any>(null);
@@ -229,7 +235,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
         if (iso === "PSE") return; // merged into Israel visually
         if (suppressed.has(iso) || !countryExists(iso, year)) return; // hidden in this era
         const c = featureCentroid(feat);
-        const name = labelOverrides?.[iso] ?? feat.properties?.name;
+        const name = labelOverrides?.[iso] ?? (toggles.endonyms ? endonymLabel(iso) : undefined) ?? feat.properties?.name;
         if (!c || !name) return;
         L.marker(c, {
           interactive: false,
@@ -240,7 +246,7 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
 
     group.addTo(mapRef.current);
     labelsLayer.current = group;
-  }, [toggles.labels, ready, labelMode, subKey, year, labelOverrides]);
+  }, [toggles.labels, toggles.endonyms, ready, labelMode, subKey, year, labelOverrides]);
 
   useEffect(() => {
     if (!ready || !mapRef.current || !countriesRef.current) return;
@@ -275,14 +281,15 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       },
       onEachFeature: (feat: any, layer: any) => {
         const iso = feat.id || feat.properties?.iso_a3 || "";
-        const name = labelOverrides?.[iso] ?? feat.properties?.name ?? "";
+        const english = feat.properties?.name ?? "";
+        const name = labelOverrides?.[iso] ?? (toggles.endonyms ? endonymLabel(iso) : undefined) ?? english;
         layer.on({
           mouseover: () => layer.setStyle({ weight: 1.2, opacity: 0.55, fillColor: "#f2aecb", fillOpacity: 0.36 }),
           mouseout: () => layer.setStyle({
             weight: 0.6, opacity: borderOpacity,
             fillColor: REFERENCE_LAND_FILL, fillOpacity: 0.9,
           }),
-          click: () => handlersRef.current.onCountry(iso, name),
+          click: () => handlersRef.current.onCountry(iso, labelOverrides?.[iso] ?? english),
           contextmenu: (e: any) => {
             e.originalEvent?.preventDefault?.();
             const p = e.originalEvent;
@@ -320,8 +327,25 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       historyLayers.current.push(label);
     });
 
+    // perspective claims (conflict pages) — repaint territory in the claimant's colour
+    (claims ?? []).forEach(c => {
+      const col = claimColor(c.owner);
+      const style = () => ({ color: col, weight: 1.6, opacity: 0.95, dashArray: "5 4", fillColor: col, fillOpacity: 0.5 });
+      const src = c.featureIso
+        ? { type: "FeatureCollection", features: countriesRef.current.features.filter((f: any) => f.id === c.featureIso) }
+        : { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [c.polygon] } };
+      const lyr = L.geoJSON(src, {
+        style,
+        onEachFeature: (_f: any, layer: any) => {
+          layer.on({ click: () => handlersRef.current.onCountry(c.owner, c.label) });
+          layer.bindTooltip(`<span class="wd-tt-name">${c.label}</span>`, { direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1 });
+        },
+      }).addTo(map);
+      overlayLayers.current.push(lyr);
+    });
+
     // India's claimed Kashmir — painted as part of India, dashed border = claim
-    const claim = L.geoJSON(INDIA_CLAIM_KASHMIR, {
+    const claim = L.geoJSON(claims ? { type: "FeatureCollection", features: [] } : INDIA_CLAIM_KASHMIR, {
       style: () => ({
         color: "rgba(80,60,70,0.85)",
         weight: 1.1,
@@ -345,18 +369,26 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
     overlayLayers.current.push(claim);
 
     if (subdivisionsRef.current) {
+      const sectHit = (feat: any) => {
+        const n = feat.properties?.name || feat.properties?.NAME || "";
+        return (INDIA_STATE_SECTS[n] ?? []).filter(t => (religionActive ?? []).includes(t));
+      };
       const sub = L.geoJSON(subdivisionsRef.current, {
-        style: () => ({
-          color: "rgba(80,60,70,1)", weight: 0.8, opacity: 0.45,
-          fillColor: "#ffffff", fillOpacity: 0,
-        }),
+        style: (feat: any) => {
+          const hit = sectHit(feat);
+          return {
+            color: "rgba(80,60,70,1)", weight: 0.8, opacity: 0.45,
+            fillColor: hit.length ? colorForTag("religion", hit[0]) : "#ffffff", fillOpacity: hit.length ? 0.45 : 0,
+          };
+        },
         onEachFeature: (feat: any, layer: any) => {
           const name = feat.properties?.name || feat.properties?.NAME || "";
           layer.on({
             mouseover: () => layer.setStyle({ weight: 1.4, opacity: 0.75, fillColor: "#f4ead8", fillOpacity: 0.22 }),
-            mouseout: () => layer.setStyle({ weight: 0.8, opacity: 0.45, fillColor: "#ffffff", fillOpacity: 0 }),
+            mouseout: () => { const hit = sectHit(feat); layer.setStyle({ weight: 0.8, opacity: 0.45, fillColor: hit.length ? colorForTag("religion", hit[0]) : "#ffffff", fillOpacity: hit.length ? 0.45 : 0 }); },
           });
-          if (name) layer.bindTooltip(`<span class="wd-tt-name">${name}</span>`, {
+          const sects = INDIA_STATE_SECTS[name];
+          if (name) layer.bindTooltip(`<span class="wd-tt-name">${name}${sects?.length ? ` · ${sects.join(", ")}` : ""}</span>`, {
             direction: "top", sticky: true, className: "wd-hover-tooltip", opacity: 1,
           });
         },
@@ -410,6 +442,17 @@ export default function AtlasMap({ center, zoom, activeFilters, toggles, year, l
       }).addTo(map);
       overlayLayers.current.push(halo);
     }
+
+    // ── religion / sect filter overlay ──
+    if (!subdivisionsRef.current) (religionActive ?? []).forEach(tag => {
+      const isos = new Set(countriesForTag("religion", tag));
+      const col = colorForTag("religion", tag);
+      const lyr = L.geoJSON(countriesRef.current, {
+        filter: (f: any) => isos.has(f.id), interactive: false,
+        style: () => ({ color: col, weight: 1, opacity: 0.6, fillColor: col, fillOpacity: 0.3 }),
+      }).addTo(map);
+      overlayLayers.current.push(lyr);
+    });
 
     // ── legal system filter overlay (blended for hybrids) ──
     const legal = legalActive ?? [];
