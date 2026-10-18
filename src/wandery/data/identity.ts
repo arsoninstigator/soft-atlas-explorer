@@ -33,6 +33,59 @@ const REL: Record<string, string[]> = {
   AUS: ["christian"], NZL: ["christian"],
 };
 
+// denominations / schools within the major religions: parent → sect → countries
+export const SECTS: Record<string, Record<string, string[]>> = {
+  islam: {
+    sunni: ["SAU","TUR","EGY","PAK","IDN","MYS","BGD","AFG","JOR","SYR","LBY","TUN","DZA","MAR","ARE","QAT","KWT","KAZ","UZB","TJK","TKM","KGZ","SEN","MLI","NER","SOM","SDN","MRT","ALB","BIH","XKX","BRN","NGA","TCD","BFA","IRQ","LBN","YEM","IND"],
+    shia: ["IRN","IRQ","AZE","BHR","LBN","YEM","PAK","AFG","SAU","KWT","IND"],
+    ibadi: ["OMN"],
+    sufi: ["SEN","TUR","PAK","IND","MAR","SDN","EGY"],
+  },
+  christianity: {
+    catholic: ["ITA","ESP","PRT","IRL","POL","FRA","BEL","AUT","HRV","SVN","CZE","SVK","HUN","LUX","MEX","BRA","ARG","CHL","PER","COL","VEN","ECU","BOL","PRY","URY","CUB","DOM","HTI","PHL","TLS","DEU","CHE","NLD","USA","CAN","LBN"],
+    protestant: ["DEU","CHE","NLD","DNK","SWE","NOR","FIN","ISL","USA","GBR","KEN","UGA","GHA","ZAF","AUS","NZL","KOR","NGA"],
+    anglican: ["GBR","AUS","NZL","NGA","UGA","KEN"],
+    "eastern-orthodox": ["GRC","CYP","BGR","ROU","SRB","MNE","RUS","UKR","BLR","MDA","GEO","MKD"],
+    "oriental-orthodox": ["ETH","EGY","ARM","ERI"],
+    pentecostal: ["BRA","NGA","GHA","KEN","USA","GTM"],
+  },
+  hinduism: {
+    vaishnavism: ["IND","NPL","BGD"],
+    shaivism: ["IND","NPL","LKA"],
+    shaktism: ["IND","NPL","BGD"],
+    smartism: ["IND"],
+  },
+  buddhism: {
+    theravada: ["THA","MMR","KHM","LAO","LKA"],
+    mahayana: ["CHN","JPN","KOR","VNM","TWN","SGP"],
+    vajrayana: ["BTN","MNG","NPL","CHN"],
+  },
+  judaism: {
+    orthodox: ["ISR","USA"],
+    conservative: ["USA","ISR"],
+    reform: ["USA","GBR","CAN"],
+  },
+};
+
+// dominant hindu traditions by indian state (approximate, regional emphasis)
+export const INDIA_STATE_SECTS: Record<string, string[]> = {
+  "Uttar Pradesh": ["vaishnavism","shaivism"], "Gujarat": ["vaishnavism","shaktism"], "Rajasthan": ["vaishnavism","shaktism"],
+  "Odisha": ["vaishnavism","shaktism"], "Manipur": ["vaishnavism"], "Haryana": ["vaishnavism"], "Delhi": ["vaishnavism"],
+  "Bihar": ["vaishnavism","shaktism"], "Madhya Pradesh": ["vaishnavism","shaivism"], "Maharashtra": ["vaishnavism","shaivism"],
+  "Andhra Pradesh": ["vaishnavism","shaivism"], "Telangana": ["vaishnavism","shaivism"], "Uttarakhand": ["shaivism","vaishnavism"],
+  "Chandigarh": ["vaishnavism"], "Punjab": ["vaishnavism"], "Goa": ["vaishnavism","shaktism"], "Karnataka": ["shaivism","vaishnavism","smartism"],
+  "Tamil Nadu": ["shaivism","vaishnavism","smartism"], "Kerala": ["shaivism","smartism","shaktism"], "Jammu and Kashmir": ["shaivism"],
+  "Himachal Pradesh": ["shaivism","shaktism"], "Chhattisgarh": ["shaivism"], "Jharkhand": ["shaivism","shaktism"], "Pondicherry": ["shaivism"],
+  "West Bengal": ["shaktism","vaishnavism"], "Assam": ["shaktism","vaishnavism"], "Tripura": ["shaktism","vaishnavism"],
+  "Meghalaya": ["shaktism"], "Sikkim": ["shaktism"], "Mizoram": [], "Nagaland": [],
+};
+
+export function sectsFor(iso: string): string[] {
+  const out: string[] = [];
+  Object.values(SECTS).forEach(g => Object.entries(g).forEach(([sect, isos]) => { if (isos.includes(iso)) out.push(sect); }));
+  return out;
+}
+
 // constitutionally / culturally secular states
 const SECULAR = new Set([
   "FRA","USA","IND","JPN","KOR","TUR","MEX","BRA","ARG","CHL","URY","DEU","NLD","CZE","EST","LVA","LTU",
@@ -82,8 +135,8 @@ const LANG: Record<string, string[]> = {
   GEO: ["georgian"], MDA: ["romanian"],
 };
 
-export function religionsFor(iso: string): { secular: boolean; tags: string[] } {
-  return { secular: SECULAR.has(iso), tags: REL[iso] ?? [] };
+export function religionsFor(iso: string): { secular: boolean; tags: string[]; sects: string[] } {
+  return { secular: SECULAR.has(iso), tags: REL[iso] ?? [], sects: sectsFor(iso) };
 }
 
 export function languagesFor(iso: string): string[] {
@@ -101,6 +154,9 @@ function buildIndex(src: Record<string, string[]>): Record<string, string[]> {
 }
 
 const REL_INDEX = buildIndex(REL);
+Object.values(SECTS).forEach(g => Object.entries(g).forEach(([sect, isos]) => {
+  REL_INDEX[sect] = Array.from(new Set([...(REL_INDEX[sect] ?? []), ...isos]));
+}));
 const LANG_INDEX = buildIndex(LANG);
 const SECULAR_ARR = Array.from(SECULAR);
 
