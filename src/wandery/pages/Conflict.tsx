@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import Atlas from "./Atlas";
 import { REGIONS } from "@/wandery/data/regions";
+import { CLAIMS } from "@/wandery/data/claims";
 
 export interface ConflictDef {
   id: string;
@@ -202,7 +203,7 @@ export default function Conflict({ id }: Props) {
 
   return (
     <>
-      <Atlas region={key} labelOverrides={overrides} />
+      <Atlas region={key} labelOverrides={overrides} claims={CLAIMS[`${def.id}:${def.perspectives[pIdx]?.id}`] ?? []} />
       {/* perspective toggle — floats above the atlas chrome */}
       <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[50] pointer-events-auto">
         <div className="inline-flex items-center gap-1 bg-card/90 backdrop-blur-2xl border border-border/70 rounded-full p-1 shadow-sm">

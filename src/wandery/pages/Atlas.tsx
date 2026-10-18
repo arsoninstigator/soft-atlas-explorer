@@ -11,6 +11,7 @@ import TagPanel from "@/wandery/components/TagPanel";
 import TagSpotlight from "@/wandery/components/TagSpotlight";
 import LegalFilterPanel from "@/wandery/components/LegalFilterPanel";
 import type { TagKind } from "@/wandery/data/identity";
+import type { Claim } from "@/wandery/data/claims";
 import type { LegalSystem } from "@/wandery/data/legal";
 import { COUNTRY_PAGE } from "@/wandery/data/history";
 import { hasArchive } from "@/wandery/data/archive";
@@ -20,14 +21,16 @@ interface Props {
   region: string;
   /** when set, overrides displayed names for select ISOs (used by conflict pages) */
   labelOverrides?: Record<string, string>;
+  /** territorial claims for the active conflict perspective */
+  claims?: Claim[];
 }
 
-export default function Atlas({ region, labelOverrides }: Props) {
+export default function Atlas({ region, labelOverrides, claims }: Props) {
   const config = REGIONS[region] ?? REGIONS.world;
   const available = filtersFor(region);
   const nav = useNavigate();
   const [active, setActive] = useState<FilterId[]>([]);
-  const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false });
+  const [toggles, setToggles] = useState<ToggleState>({ labels: true, borders: true, terrain: false, pins: false, endonyms: false });
   const [year, setYear] = useState(2025);
   const [picked, setPicked] = useState<{ iso: string; name: string } | null>(null);
   const [tagFocus, setTagFocus] = useState<{ kind: TagKind; tag: string } | null>(null);
@@ -35,12 +38,13 @@ export default function Atlas({ region, labelOverrides }: Props) {
   const [legalOpen, setLegalOpen] = useState(false);
   const [legalActive, setLegalActive] = useState<LegalSystem[]>([]);
   const [legalSubActive, setLegalSubActive] = useState<string[]>([]);
+  const [religionActive, setReligionActive] = useState<string[]>([]);
   const [menu, setMenu] = useState<{ iso: string; name: string; x: number; y: number } | null>(null);
 
   // reset filters when region changes
   useEffect(() => {
     setActive([]); setPicked(null); setTagFocus(null); setTagListOpen(false);
-    setLegalActive([]); setLegalSubActive([]); setLegalOpen(false); setMenu(null);
+    setLegalActive([]); setLegalSubActive([]); setReligionActive([]); setLegalOpen(false); setMenu(null);
   }, [region]);
 
   // dismiss menu on any outside click / escape
@@ -73,6 +77,8 @@ export default function Atlas({ region, labelOverrides }: Props) {
         legalActive={legalActive}
         legalSubActive={legalSubActive}
         labelOverrides={labelOverrides}
+        claims={claims}
+        religionActive={religionActive}
         onCountry={(iso, name) => setPicked({ iso, name })}
         onCountryContext={(iso, name, x, y) => setMenu({ iso, name, x, y })}
       />
@@ -117,6 +123,8 @@ export default function Atlas({ region, labelOverrides }: Props) {
             subActive={legalSubActive}
             onToggle={(s) => setLegalActive(a => a.includes(s) ? a.filter(x => x !== s) : [...a, s])}
             onToggleSub={(k) => setLegalSubActive(a => a.includes(k) ? a.filter(x => x !== k) : [...a, k])}
+            religionActive={religionActive}
+            onToggleReligion={(k) => setReligionActive(a => a.includes(k) ? a.filter(x => x !== k) : [...a, k])}
             onClose={() => setLegalOpen(false)}
           />
         </div>
@@ -162,6 +170,7 @@ export default function Atlas({ region, labelOverrides }: Props) {
             iso={picked.iso}
             name={picked.name}
             year={year}
+            endonyms={toggles.endonyms}
             onClose={() => setPicked(null)}
             onTag={(kind, tag) => { setTagFocus({ kind, tag }); setTagListOpen(false); }}
           />

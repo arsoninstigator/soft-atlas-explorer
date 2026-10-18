@@ -114,4 +114,5 @@ export const COUNTRY_PAGE: Record<string, string> = {
   GBR: "unitedkingdom",
   AUS: "australia",
   NZL: "newzealand",
+  IND: "india",
 };
