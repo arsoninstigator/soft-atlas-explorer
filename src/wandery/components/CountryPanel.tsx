@@ -1,25 +1,37 @@
 import { X } from "lucide-react";
 import { affiliationsForCountry } from "@/wandery/data/filters";
+import { COUNTRY_INFO } from "@/wandery/data/countryinfo";
 import { religionsFor, languagesFor, colorForTag, type TagKind } from "@/wandery/data/identity";
 
 interface Props {
   iso: string;
   name: string;
   year: number;
+  endonyms?: boolean;
   onClose: () => void;
   onTag?: (kind: TagKind, tag: string) => void;
 }
 
-export default function CountryPanel({ iso, name, year, onClose, onTag }: Props) {
+export default function CountryPanel({ iso, name, year, endonyms, onClose, onTag }: Props) {
   const affs = affiliationsForCountry(iso);
   const rel = religionsFor(iso);
   const langs = languagesFor(iso);
+  const info = COUNTRY_INFO[iso];
   return (
     <aside className="pointer-events-auto w-[320px] max-w-[90vw] bg-card/85 backdrop-blur-2xl border border-border/70 rounded-2xl shadow-md overflow-hidden">
       <div className="px-5 pt-4 pb-3 border-b border-border/60 flex items-start justify-between">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">archived country · {iso}</div>
-          <h2 className="font-serif text-2xl mt-1 leading-tight text-foreground">{name}</h2>
+          <h2 className="font-serif text-2xl mt-1 leading-tight text-foreground">{endonyms && info ? info.endonym : name}</h2>
+          {info && (
+            <>
+              <div className="text-xs text-muted-foreground mt-0.5">{endonyms ? name : info.endonym}</div>
+              <div className="mt-2 flex gap-1.5 font-mono text-[10px]">
+                <span className="px-2 py-0.5 rounded-full border border-border/60 bg-muted/50 text-foreground">{info.iso2}</span>
+                <span className="px-2 py-0.5 rounded-full border border-border/60 bg-muted/50 text-foreground">{info.phone}</span>
+              </div>
+            </>
+          )}
         </div>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground -mr-2 -mt-1 p-1">
           <X className="h-4 w-4" />
@@ -66,6 +78,20 @@ export default function CountryPanel({ iso, name, year, onClose, onTag }: Props)
                   }}
                 >
                   #{t}
+                </button>
+              ))}
+              {rel.sects.map(t => (
+                <button
+                  key={`s-${t}`}
+                  onClick={() => onTag?.("religion", t)}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-full border hover:opacity-90 transition-opacity"
+                  style={{
+                    background: colorForTag("religion", t).replace(")", " / 0.14)"),
+                    borderColor: colorForTag("religion", t).replace(")", " / 0.5)"),
+                    color: "hsl(var(--foreground))",
+                  }}
+                >
+                  ↳ #{t}
                 </button>
               ))}
             </div>

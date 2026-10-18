@@ -1,4 +1,4 @@
-import { Layers, Tag, Mountain, Square, MapPin, SlidersHorizontal } from "lucide-react";
+import { Layers, Tag, Mountain, Square, MapPin, SlidersHorizontal, Languages } from "lucide-react";
 import type { ToggleState } from "./AtlasMap";
 
 interface Props {
@@ -28,6 +28,7 @@ export default function MapControls({ toggles, setToggles, filterOpen, onToggleF
   return (
     <div className="pointer-events-auto flex flex-col gap-1.5">
       <Btn on={toggles.labels}  onClick={set("labels")}  title="labels"><Tag className="h-3.5 w-3.5" /></Btn>
+      <Btn on={toggles.endonyms} onClick={set("endonyms")} title={toggles.endonyms ? "showing endonyms (native names)" : "showing exonyms (english names)"}><Languages className="h-3.5 w-3.5" /></Btn>
       <Btn on={!!filterOpen}    onClick={onToggleFilter} title="filter"><SlidersHorizontal className="h-3.5 w-3.5" /></Btn>
       <Btn on={toggles.borders} onClick={set("borders")} title="borders"><Square className="h-3.5 w-3.5" /></Btn>
       <Btn on={toggles.terrain} onClick={set("terrain")} title="terrain"><Mountain className="h-3.5 w-3.5" /></Btn>

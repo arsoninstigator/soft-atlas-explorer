@@ -54,5 +54,12 @@ export const REGIONS: Record<string, RegionConfig> = {
   },
 };
 
+REGIONS.india = {
+  key: "india", label: "india (states)", center: [22, 80], zoom: 4.5,
+  blurb: "states and union territories; hindu traditions mapped by region",
+  labelMode: "subdivisions",
+  subdivisionsUrl: "https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/india.geojson",
+};
+
 export const REGION_ORDER = ["world","europe","northamerica","southamerica","asia","africa","mena","oceania"];
-export const OTHER_ORDER = ["canada","unitedstates","unitedkingdom","australia","newzealand"];
+export const OTHER_ORDER = ["canada","unitedstates","unitedkingdom","australia","newzealand","india"];
